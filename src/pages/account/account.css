@@ -1,0 +1,180 @@
+.account-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  margin-top: 80px;
+  background-image: radial-gradient(at 50% 50%,
+      hsla(162, 77%, 40%, 0.121) 0,
+      transparent 50%),
+    radial-gradient(at 82% 65%, #111d2765 0, transparent 50%);
+
+  .account-details {
+    height: 90vh;
+    width: 40vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .account-title {
+      font-size: 1.3rem;
+      color: #d6d6d6;
+      padding-bottom: 30px;
+      text-transform: uppercase;
+    }
+
+    .form-box {
+      .column-details {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        width: 100%;
+      }
+
+      .column-field {
+        color: #f6f6f6;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+        border: 1px solid #ffffff32;
+        background-color: transparent;
+      }
+
+      .radio-group {
+        color: #f6f6f6;
+        display: flex;
+        align-items: center;
+        margin: 10px 0;
+
+        label {
+          display: flex;
+          align-items: center;
+          margin: 0 10px;
+        }
+
+        input[type="radio"] {
+          display: none;
+        }
+
+        /* Custom radio button */
+        .custom-radio {
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          border: 2px solid #d6d6d6;
+          margin-right: 6px;
+          position: relative;
+          cursor: pointer;
+          transition: border-color 0.3s;
+        }
+
+        /* Inner dot for the selected state */
+        .custom-radio::after {
+          content: '';
+          display: none;
+          width: 13px;
+          height: 13px;
+          background-color: #d6d6d6;
+          border-radius: 50%;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+
+        /* Show the inner dot when checked */
+        input[type="radio"]:checked+.custom-radio::after {
+          display: block;
+          /* Show inner dot when checked */
+        }
+
+        /* Change border color on hover */
+        .custom-radio:hover {
+          border-color: #f6f6f6;
+          /* Change border color on hover */
+        }
+      }
+    }
+
+    .details-box {
+      border: 1px solid;
+      width: 900px;
+      color: #d6d6d6;
+
+      .field-names {
+        border-right: 1px solid;
+        width: 20%;
+        text-align: start;
+      }
+
+      .column-field {
+        border-bottom: 1px solid;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px;
+        text-align: end;
+        font-size: 18px;
+      }
+
+      .details-data {
+        width: 80%;
+      }
+    }
+
+    .edit-btn {
+      margin-top: 30px;
+      padding: 12px 20px;
+      border-radius: 4px;
+      background-color: #ffffff1f;
+      border: 1px solid #ffffff1a;
+      font-size: 16px;
+      color: #d4d4d4;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .edit-btn:hover {
+      background-color: #ffffff29;
+    }
+  }
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-5px);
+  }
+
+  50% {
+    transform: translateX(5px);
+  }
+
+  75% {
+    transform: translateX(-5px);
+  }
+}
+
+@media (max-width: 600px) {
+  .account-details {
+    width: 90vw;
+  }
+
+  .account-title {
+    font-size: 1rem;
+  }
+}
