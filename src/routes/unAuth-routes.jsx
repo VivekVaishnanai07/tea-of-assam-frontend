@@ -1,14 +1,14 @@
-import UnAuthGuard from "../components/auth/guards/unAuth-guard.jsx";
-import SingleProduct from "../components/single-product/single-product.jsx";
-import About from "../pages/about/about.jsx";
-import AllProducts from "../pages/all-products/all-products.jsx";
-import Login from "../pages/auth/login/login.jsx";
-import Register from "../pages/auth/register/register.jsx";
-import ContactUs from "../pages/contact/contact.jsx";
-import Dashboard from "../pages/dashboard/dashboard.jsx";
-import Faqs from "../pages/faqs/faqs.jsx";
-import Policies from "../pages/policies/Policies.jsx";
-import Wholesale from "../pages/wholesale/wholesale.jsx";
+import UnAuthGuard from "../components/auth/guards/unAuth-guard";
+import SingleProduct from "../components/single-product/single-product";
+import About from "../pages/about/about";
+import AllProducts from "../pages/all-products/all-products";
+import Login from "../pages/auth/login/login";
+import Register from "../pages/auth/register/register";
+import ContactUs from "../pages/contact/contact";
+import Dashboard from "../pages/dashboard/dashboard";
+import Faqs from "../pages/faqs/faqs";
+import Policies from "../pages/policies/policies";
+import Wholesale from "../pages/wholesale/wholesale";
 
 const UnAuthRoutes = [
   {
