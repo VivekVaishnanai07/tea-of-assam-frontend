@@ -12,6 +12,5 @@ export const store = configureStore({
     products: productReducer,
     giftProducts: giftProductReducer,
     clients: clientsReducer,
-    wishlist: wishlistReducer
   },
 })
