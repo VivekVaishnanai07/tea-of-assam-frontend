@@ -144,6 +144,7 @@
 
   .logout-option {
     font-weight: 500;
+    cursor: pointer;
   }
 
   .primary-btn {
@@ -881,5 +882,9 @@
     text-transform: uppercase;
     border-radius: 4px;
     cursor: pointer;
+  }
+
+  .address-form.error-input {
+    border: 1px solid rgba(139, 0, 0, 0.708) !important;
   }
 }

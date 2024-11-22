@@ -40,3 +40,19 @@ api.interceptors.response.use(
 );
 
 export default api;
+
+
+export function generateTrackingNumber() {
+  const prefix = '1Z'; // For UPS-style tracking numbers
+  const randomPart = Array.from({ length: 16 }, () =>
+    Math.floor(Math.random() * 10)).join(''); // 16 random digits
+  return `${prefix}${randomPart}`;
+}
+
+export function generateTransactionID() {
+  const prefix = 'txn_'; // Prefix to indicate transaction
+  const randomPart = Array.from({ length: 12 }, () =>
+    Math.random().toString(36).charAt(2) // Random alphanumeric characters
+  ).join('').toUpperCase();
+  return `${prefix}${randomPart}`;
+}

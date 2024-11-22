@@ -2,33 +2,29 @@ import { jwtDecode } from "jwt-decode";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+
 import AddIcon from "../../assets/svg/add.svg";
 import ClockIcon from "../../assets/svg/clock.svg";
 import deleteImg from "../../assets/svg/delete.svg";
 import ReloadIcon from "../../assets/svg/reload.svg";
 import { decreaseQuantity, getCartProductsList, increaseQuantity, removeCartItem } from "../../store/features/cart/thunk";
-import { clientsThunk } from "../../store/features/clients/thunk";
+import { addNewAddressThunk, clientsThunk, updateAddressThunk } from "../../store/features/clients/thunk";
+import { placeOrderThunk } from "../../store/features/orders/thunk";
+import { generateTrackingNumber, generateTransactionID } from "../../utils/util";
 import "./new-checkout.css";
-import { toast } from "sonner";
 
 const NewCheckout = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [activeSection, setActiveSection] = useState(2);
-  const [editingAddressIndex, setEditingAddressIndex] = useState(null);
-  const [addNewAddress, setAddNewAddress] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(900);
-  const [selectedAddress, setSelectedAddress] = useState(null);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
-  const [captchaText, setCaptchaText] = useState('');
-  const [userInput, setUserInput] = useState('');
-  const [cartCount, setCartCount] = useState(0);
-  const [totalAmount, setTotalAmount] = useState(null);
-  const [platformCharge, setPlatformCharge] = useState(3);
   const canvasRef = useRef(null);
   const intervalRef = useRef(null);
   const isToken = localStorage.getItem("clientToken");
   const user = jwtDecode(isToken);
+
+  const [activeSection, setActiveSection] = useState(2);
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [editingAddressIndex, setEditingAddressIndex] = useState(null);
   const [clientDetails, setClientDetails] = useState({
     name: "",
     mobile: "",
@@ -39,7 +35,7 @@ const NewCheckout = () => {
     state: "",
     type: "home"
   })
-
+  const [addNewAddress, setAddNewAddress] = useState(false);
   const [addNewDeliveryAddress, setAddNewDeliveryAddress] = useState({
     name: "",
     mobile: "",
@@ -50,7 +46,6 @@ const NewCheckout = () => {
     state: "",
     type: "home"
   })
-
   const [errors, setErrors] = useState({
     name: true,
     mobile: true,
@@ -61,9 +56,46 @@ const NewCheckout = () => {
     state: true,
     type: true,
   });
+  const [timeLeft, setTimeLeft] = useState(900);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
+  const [upiValue, setUpiValue] = useState("");
+  const [upiButton, setUpiButton] = useState(true);
+  const [cardDetails, setCardDetails] = useState({
+    cardNumber: "",
+    expiryDate: "",
+    cvv: ""
+  });
+  const [userInput, setUserInput] = useState('');
+  const [captchaText, setCaptchaText] = useState('');
+  const [cartCount, setCartCount] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(null);
+  const [platformCharge, setPlatformCharge] = useState(3);
 
   const cartItems = useSelector((state) => state.cart.cartProducts);
   const userData = useSelector((state) => state.clients.client);
+  const addressData = useSelector((state) => state.clients.addressData);
+
+  useEffect(() => {
+    if (localStorage.getItem('orderPlaced')) {
+      navigate('/order-place');
+    }
+  }, [navigate]);
+
+  useEffect(() => {
+    if (user) {
+      dispatch(getCartProductsList(user.id));
+      dispatch(clientsThunk({ clientId: user.id }));
+    }
+  }, [dispatch])
+
+  useEffect(() => {
+    if (userData.deliveryAddresses) {
+      if (selectedAddress === null) {
+        setSelectedAddress(userData.deliveryAddresses[0]);
+      }
+      setClientDetails();
+    }
+  }, [userData.deliveryAddresses])
 
   useEffect(() => {
     if (activeSection === 4) {
@@ -85,11 +117,10 @@ const NewCheckout = () => {
   }, [activeSection]);
 
   useEffect(() => {
-    if (user) {
-      dispatch(getCartProductsList(user.id));
-      dispatch(clientsThunk({ clientId: user.id }));
+    if (selectedPaymentMethod === "cod") {
+      initializeCaptcha();
     }
-  }, [dispatch])
+  }, [selectedPaymentMethod]);
 
   useEffect(() => {
     if (cartItems && cartItems.length > 0) {
@@ -104,25 +135,242 @@ const NewCheckout = () => {
     }
   }, [cartItems]);
 
-  // Run initializeCaptcha once on component mount
-  useEffect(() => {
-    if (selectedPaymentMethod === "cod") {
-      initializeCaptcha();
-    }
-  }, [selectedPaymentMethod]);
-
-  useEffect(() => {
-    if (userData.deliveryAddresses) {
-      setSelectedAddress(userData.deliveryAddresses[0]);
-      setClientDetails();
-    }
-  }, [userData.deliveryAddresses])
-
   const toggleSection = (index) => {
     setActiveSection(index);
   };
 
-  // Function to initialize the CAPTCHA
+  const Logout = () => {
+    localStorage.removeItem("clientToken");
+    navigate("/login");
+    window.location.reload();
+  }
+
+  const handleAddressSelect = (address) => {
+    if (address === "addressNew") {
+      setSelectedAddress(address);
+      setAddNewDeliveryAddress({
+        name: "",
+        mobile: "",
+        zip: "",
+        locality: "",
+        streetAddress: "",
+        city: "",
+        state: "",
+        type: "home"
+      });
+    } else {
+      console.log(addNewAddress);
+      setSelectedAddress(address);
+      setAddNewAddress(false);
+    }
+  };
+
+  const handleAddressFormChange = (index, address) => {
+    const addressToEdit = userData.deliveryAddresses[index];
+    setEditingAddressIndex(index);
+    setClientDetails({
+      ...addressToEdit,
+    });
+    setSelectedAddress(address);
+    if (address !== "addressNew") {
+      setAddNewDeliveryAddress({
+        name: "",
+        mobile: "",
+        zip: "",
+        locality: "",
+        streetAddress: "",
+        city: "",
+        state: "",
+        type: "home"
+      });
+      setAddNewAddress(false);
+    }
+  }
+
+  const handleTypeChange = (event, address) => {
+    const { value } = event.target;
+    if (address === "update") {
+      setClientDetails((prevDetails) => ({
+        ...prevDetails,
+        type: value,
+      }));
+    } else {
+      setAddNewDeliveryAddress((prevDetails) => ({
+        ...prevDetails,
+        type: value,
+      }));
+    }
+  };
+
+  const handleAddNewAddressFormChange = () => {
+    setSelectedAddress("addressNew");
+    setAddNewAddress(!addNewAddress);
+    setEditingAddressIndex(null);
+  }
+
+  const saveAndHereAddress = (address) => {
+    let isValid = true;
+
+    if (!/^[A-Za-z\s]+$/.test(address === "update" ? clientDetails.name : addNewDeliveryAddress.name)) {
+      errors.lastName = false;
+      toast.error("Invalid Name");
+      isValid = false;
+    }
+
+    if (!/^\d+$/.test(address === "update" ? clientDetails.mobile : addNewDeliveryAddress.mobile)) {
+      errors.mobile = false;
+      toast.error("Invalid Mobile Number");
+      isValid = false;
+    }
+
+    if (!/^\d{6}(-\d{5})?$/.test(address === "update" ? clientDetails.zip : addNewDeliveryAddress.zip)) {
+      errors.zip = false;
+      toast.error("Invalid ZipCode");
+      isValid = false;
+    }
+
+    const locality = address === "update" ? !clientDetails.locality.trim() : !addNewDeliveryAddress.locality.trim();
+    if (locality) {
+      errors.locality = false;
+      toast.error("Invalid Locality");
+      isValid = false;
+    }
+
+    const streetAddress = address === "update" ? !clientDetails.streetAddress.trim() : !addNewDeliveryAddress.streetAddress.trim();
+    if (streetAddress) {
+      errors.streetAddress = false;
+      toast.error("Invalid Address");
+      isValid = false;
+    }
+
+    const city = address === "update" ? !clientDetails.city.trim() : !addNewDeliveryAddress.city.trim();
+    if (city) {
+      errors.city = false;
+      toast.error("Invalid City");
+      isValid = false;
+    }
+
+    const state = address === "update" ? !clientDetails.state.trim() : !addNewDeliveryAddress.state.trim();
+    if (state) {
+      errors.state = false;
+      toast.error("Invalid State");
+      isValid = false;
+    }
+    setErrors(errors);
+
+    if (address === "update") {
+      if (isValid) {
+        dispatch(updateAddressThunk({ clientId: userData._id, newAddress: clientDetails }))
+        dispatch(clientsThunk({ clientId: user.id }));
+        if (addressData) {
+          setClientDetails({
+            name: "",
+            mobile: "",
+            zip: "",
+            locality: "",
+            streetAddress: "",
+            city: "",
+            state: "",
+            type: "home"
+          });
+          setSelectedAddress(clientDetails);
+          setActiveSection(3);
+        }
+      }
+    } else if (address === "add") {
+      if (isValid) {
+        dispatch(addNewAddressThunk({ clientId: userData._id, newAddress: addNewDeliveryAddress }))
+        dispatch(clientsThunk({ clientId: user.id }));
+        if (addressData) {
+          setAddNewDeliveryAddress({
+            name: "",
+            mobile: "",
+            zip: "",
+            locality: "",
+            streetAddress: "",
+            city: "",
+            state: "",
+            type: "home"
+          });
+          setSelectedAddress(addNewDeliveryAddress);
+          setActiveSection(3);
+        }
+      }
+    }
+  }
+
+  const handleRemoveFromCart = (id) => {
+    if (id && user) {
+      dispatch(removeCartItem({ client_id: user.id, product_id: id }))
+    }
+  }
+
+  const handleIncreaseQuantity = (id) => {
+    dispatch(increaseQuantity({ client_id: user.id, product_id: id }));
+  };
+
+  const handleDecreaseQuantity = (id) => {
+    dispatch(decreaseQuantity({ client_id: user.id, product_id: id }));
+  };
+
+  const handlePaymentMethodChange = (method) => {
+    setSelectedPaymentMethod(method);
+  };
+
+  function validateUPI() {
+    const upiPattern = /^[0-9]{10}@[a-zA-Z0-9]+$/;
+    if (upiPattern.test(upiValue)) {
+      toast.success("Valid UPI ID format.")
+      setUpiButton(false);
+    } else {
+      toast.error("Invalid UPI ID.")
+      setUpiButton(true);
+    }
+  }
+
+  const validateCardDetails = () => {
+    let valid = true;
+
+    // Trim spaces from inputs
+    const cardNumber = cardDetails.cardNumber.replace(/\s+/g, ''); // Remove spaces
+    const expiryDate = cardDetails.expiryDate.trim();
+    const cvv = cardDetails.cvv.trim();
+
+    // Card number validation (16 digits, spaces allowed)
+    const cardNumberPattern = /^[0-9]{16}$/;
+    if (!cardNumberPattern.test(cardNumber)) {
+      toast.error("Card number must be 16 digits (no spaces or dashes).");
+      valid = false;
+    }
+
+    // Expiry date validation (MM/YY format)
+    const expiryDatePattern = /^(0[1-9]|1[0-2])\/?([0-9]{2})$/;
+    if (!expiryDatePattern.test(expiryDate)) {
+      toast.error("Expiry date must be in MM/YY format.");
+      valid = false;
+    } else {
+      // Check if expiry date is in the future
+      const [month, year] = expiryDate.split('/').map(Number);
+      const currentDate = new Date();
+      const currentYear = currentDate.getFullYear() % 100; // Last two digits of current year
+      const currentMonth = currentDate.getMonth() + 1;
+
+      if (year < currentYear || (year === currentYear && month < currentMonth)) {
+        toast.error("Your card is expiry.");
+        valid = false;
+      }
+    }
+
+    // CVV validation (3 digits)
+    const cvvPattern = /^[0-9]{3,4}$/; // Support 4 digits for AmEx
+    if (!cvvPattern.test(cvv)) {
+      toast.error("CVV must be 3 or 4 digits.");
+      valid = false;
+    }
+
+    return valid;
+  };
+
   const initializeCaptcha = (digitCount = 3) => {
     const canvas = canvasRef.current;
 
@@ -180,81 +428,40 @@ const NewCheckout = () => {
     }
   };
 
-  // Handle CAPTCHA reload
   const handleReload = () => {
     initializeCaptcha();
     setUserInput('');
   };
 
-  const handleAddressSelect = (address) => {
-    if (address === "addressNew") {
-      setSelectedAddress(address);
-      setAddNewDeliveryAddress({
-        name: "",
-        mobile: "",
-        zip: "",
-        locality: "",
-        streetAddress: "",
-        city: "",
-        state: "",
-        type: "home"
-      });
-    } else {
-      setSelectedAddress(address);
-      setAddNewAddress(false);
-    }
-  };
-
-  const handleTypeChange = (event) => {
-    const { value } = event.target;
-    setClientDetails((prevDetails) => ({
-      ...prevDetails,
-      type: value,
-    }));
-  };
-
-  const handleAddressFormChange = (index, address) => {
-    const addressToEdit = userData.deliveryAddresses[index];
-    setEditingAddressIndex(index);
-    setClientDetails({
-      ...addressToEdit,
-    });
-    setSelectedAddress(address);
-  }
-
-  const handleAddNewAddressFormChange = () => {
-    setSelectedAddress("addressNew");
-    setAddNewAddress(!addNewAddress);
-  }
-
-  const handleRemoveFromCart = (id) => {
-    if (id && user) {
-      dispatch(removeCartItem({ client_id: user.id, product_id: id }))
-    }
-  }
-
-  const handleIncreaseQuantity = (id) => {
-    dispatch(increaseQuantity({ client_id: user.id, product_id: id }));
-  };
-
-  const handleDecreaseQuantity = (id) => {
-    dispatch(decreaseQuantity({ client_id: user.id, product_id: id }));
-  };
-
-  const handlePaymentMethodChange = (method) => {
-    setSelectedPaymentMethod(method);
-  };
-
   const handlePlaceOrder = (paymentMethod) => {
-    if (paymentMethod === "cod") {
+    if (paymentMethod === "COD") {
       if (userInput === captchaText) {
+        const orderData = {
+          clientId: userData._id,
+          products: cartItems.map(({ image, ...rest }) => rest),
+          orderTotal: totalAmount,
+          orderStatus: "Prepare",
+          shippingAddress: selectedAddress,
+          shippingMethod: "Standard",
+          shippingStatus: "In Transit",
+          trackingNumber: generateTrackingNumber(),
+          paymentMethod: paymentMethod,
+          amount: totalAmount + platformCharge,
+          transaction_id: generateTransactionID()
+        };
+        dispatch(placeOrderThunk(orderData))
+        localStorage.setItem('orderPlaced', 'true');
         navigate("/order-place");
       } else {
         toast.info('Incorrect CAPTCHA. Reloading...');
         initializeCaptcha();
         setUserInput('');
       }
-    } else if (paymentMethod === "card" || paymentMethod === "upi") {
+    } else if (paymentMethod === "CARD") {
+      if (validateCardDetails()) {
+        navigate("/order-place");
+      }
+    } else if (paymentMethod === "UPI") {
       navigate("/order-place");
     }
   }
@@ -303,7 +510,7 @@ const NewCheckout = () => {
                       <span className="user-number">{userData.mobileNumber}</span>
                     </div>
                     <div className="mb-12">
-                      <span className="logout-option">Logout & Sign in to another account</span>
+                      <span className="logout-option" onClick={Logout}>Logout & Sign in to another account</span>
                     </div>
                     <div className="mb-12">
                       <button className="primary-btn" onClick={() => toggleSection(2)}>
@@ -391,7 +598,11 @@ const NewCheckout = () => {
                 </div>
               </div>
               {activeSection > 2 && (
-                <button className="action-btn" onClick={() => toggleSection(2)}>
+                <button className="action-btn" onClick={() => {
+                  setSelectedAddress(selectedAddress);
+                  toggleSection(2);
+                  setAddNewAddress(false);
+                }}>
                   Change
                 </button>
               )}
@@ -448,7 +659,6 @@ const NewCheckout = () => {
                                     placeholder="Pin Code"
                                     type="text"
                                     name="zip"
-                                    id="ml"
                                     className={errors.zip ? "" : "error-input"}
                                     value={clientDetails.zip || address.pinCode}
                                     onChange={(e) => setClientDetails({ ...clientDetails, zip: e.target.value })}
@@ -460,7 +670,6 @@ const NewCheckout = () => {
                                     placeholder="Locality"
                                     type="text"
                                     name="locality"
-                                    id="ml"
                                     className={errors.locality ? "" : "error-input"}
                                     value={clientDetails.locality || address.locality}
                                     onChange={(e) => setClientDetails({ ...clientDetails, locality: e.target.value })}
@@ -515,7 +724,7 @@ const NewCheckout = () => {
                                       name="addressType"
                                       value="home"
                                       checked={clientDetails.type === "home"}
-                                      onChange={handleTypeChange}
+                                      onChange={(e) => handleTypeChange(e, "update")}
                                     />
                                     <label htmlFor="type-home" className="address-btn"></label>
                                     <span className="address-label">Home (All day delivery)</span>
@@ -527,7 +736,7 @@ const NewCheckout = () => {
                                       name="addressType"
                                       value="work"
                                       checked={clientDetails.type === "work"}
-                                      onChange={handleTypeChange}
+                                      onChange={(e) => handleTypeChange(e, "update")}
                                     />
                                     <label htmlFor="type-work" className="address-btn"></label>
                                     <span className="address-label">Work (Delivery between 10 AM - 5 PM)</span>
@@ -535,7 +744,7 @@ const NewCheckout = () => {
                                 </div>
                               </div>
                               <div>
-                                <button className="save-and-here-btn">Save and Here</button>
+                                <button className="save-and-here-btn" onClick={() => saveAndHereAddress("update")}>Save and Here</button>
                                 <button className="cancel-btn" onClick={() => setEditingAddressIndex(null)}>Cancel</button>
                               </div>
                             </div>
@@ -611,8 +820,10 @@ const NewCheckout = () => {
                             <div className="w-100">
                               <label>Mobile Number</label>
                               <input
-                                type="tel"
+                                type="text"
+                                placeholder="Mobile Number"
                                 name="mobile"
+                                maxLength={10} pattern="\d{10}"
                                 className={errors.mobile ? "" : "error-input"}
                                 value={addNewDeliveryAddress.mobile}
                                 onChange={(e) => setAddNewDeliveryAddress({ ...addNewDeliveryAddress, mobile: e.target.value })}
@@ -626,7 +837,7 @@ const NewCheckout = () => {
                                 placeholder="Pin Code"
                                 type="text"
                                 name="zip"
-                                id="ml"
+                                maxLength={6} pattern="\d{6}"
                                 className={errors.zip ? "" : "error-input"}
                                 value={addNewDeliveryAddress.zip}
                                 onChange={(e) => setAddNewDeliveryAddress({ ...addNewDeliveryAddress, zip: e.target.value })}
@@ -638,7 +849,6 @@ const NewCheckout = () => {
                                 placeholder="Locality"
                                 type="text"
                                 name="locality"
-                                id="ml"
                                 className={errors.locality ? "" : "error-input"}
                                 value={addNewDeliveryAddress.locality}
                                 onChange={(e) => setAddNewDeliveryAddress({ ...addNewDeliveryAddress, locality: e.target.value })}
@@ -691,7 +901,7 @@ const NewCheckout = () => {
                                   name="addressType"
                                   value="home"
                                   checked={addNewDeliveryAddress.type === "home"}
-                                  onChange={handleTypeChange}
+                                  onChange={(e) => handleTypeChange(e, "add")}
                                 />
                                 <label htmlFor="type-home" className="address-btn"></label>
                                 <span className="address-label">Home (All day delivery)</span>
@@ -703,7 +913,7 @@ const NewCheckout = () => {
                                   name="addressType"
                                   value="work"
                                   checked={addNewDeliveryAddress.type === "work"}
-                                  onChange={handleTypeChange}
+                                  onChange={(e) => handleTypeChange(e, "add")}
                                 />
                                 <label htmlFor="type-work" className="address-btn"></label>
                                 <span className="address-label">Work (Delivery between 10 AM - 5 PM)</span>
@@ -711,7 +921,7 @@ const NewCheckout = () => {
                             </div>
                           </div>
                           <div>
-                            <button className="save-and-here-btn">Save and Here</button>
+                            <button className="save-and-here-btn" onClick={() => saveAndHereAddress("add")}>Save and Here</button>
                             <button className="cancel-btn" onClick={() => setAddNewAddress(false)}>Cancel</button>
                           </div>
                         </div>
@@ -831,9 +1041,9 @@ const NewCheckout = () => {
                         {selectedPaymentMethod === "upi" && (
                           <div className="payment-content">
                             <div className="content-align">
-                              <input type="text" placeholder="number@upi" />
-                              <button className="verify-btn">Verify</button>
-                              <button className="upi-pay-btn" onClick={() => handlePlaceOrder("upi")}>Pay ${totalAmount}</button>
+                              <input type="text" value={upiValue} placeholder="number@upi" onChange={(e) => setUpiValue(e.target.value)} />
+                              <button className="verify-btn" onClick={validateUPI}>Verify</button>
+                              <button className="upi-pay-btn" onClick={() => handlePlaceOrder("UPI")} disabled={upiButton}>Pay ${totalAmount}</button>
                             </div>
                             <div className="mt-8">
                               Pay by any UPI app
@@ -860,13 +1070,32 @@ const NewCheckout = () => {
                           <>
                             <div className="payment-content">
                               <div className="content-align">
-                                <input type="text" placeholder="Card Number" />
+                                <input
+                                  type="text"
+                                  placeholder="1234 1234 1234 1234"
+                                  maxLength={19}
+                                  value={cardDetails.cardNumber}
+                                  onChange={(e) => setCardDetails({ ...cardDetails, cardNumber: e.target.value })}
+                                />
                               </div>
                               <div className="content-align mt-8">
-                                <input type="text" placeholder="Expiry Date (MM/YY)" className="expiry-date" />
-                                <input type="text" placeholder="CVV" className="cvv" />
+                                <input
+                                  type="text"
+                                  placeholder="Expiry Date (MM/YY)"
+                                  className="expiry-date"
+                                  value={cardDetails.expiryDate}
+                                  onChange={(e) => setCardDetails({ ...cardDetails, expiryDate: e.target.value })}
+                                />
+                                <input
+                                  type="password"
+                                  placeholder="***"
+                                  className="cvv"
+                                  maxLength={3}
+                                  value={cardDetails.cvv}
+                                  onChange={(e) => setCardDetails({ ...cardDetails, cvv: e.target.value })}
+                                />
                               </div>
-                              <button className="upi-pay-btn mt-8" onClick={() => handlePlaceOrder("card")}>Pay ${totalAmount}</button>
+                              <button className="upi-pay-btn mt-8" onClick={() => handlePlaceOrder("CARD")}>Pay ${totalAmount}</button>
                             </div>
                             <div className="mt-8">
                               Add and secure cards as per RBI guidelines
@@ -917,7 +1146,7 @@ const NewCheckout = () => {
                               />
 
                               {/* Submit Button */}
-                              <button className="captcha-submit" onClick={() => handlePlaceOrder("cod")}>
+                              <button className="captcha-submit" onClick={() => handlePlaceOrder("COD")}>
                                 Confirm Order
                               </button>
                             </div>

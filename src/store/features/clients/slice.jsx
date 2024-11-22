@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { clientsThunk } from "./thunk";
+import { addNewAddressThunk, clientsThunk, updateAddressThunk } from "./thunk";
 
 const clientsSlice = createSlice({
   name: "clients",
   initialState: {
     client: {},
+    addressData: {},
     error: null
   },
   extraReducers: (builder) => {
@@ -12,6 +13,18 @@ const clientsSlice = createSlice({
       state.client = action.payload;
     })
       .addCase(clientsThunk.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(addNewAddressThunk.fulfilled, (state, action) => {
+        state.addressData = action.payload;
+      })
+      .addCase(addNewAddressThunk.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(updateAddressThunk.fulfilled, (state, action) => {
+        state.addressData = action.payload;
+      })
+      .addCase(updateAddressThunk.rejected, (state, action) => {
         state.error = action.error.message;
       })
   }

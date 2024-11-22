@@ -98,6 +98,7 @@ const CartPopup = () => {
               totalQuantity > 0
                 ? (
                   navigate("/checkout"),
+                  localStorage.removeItem('orderPlaced'),
                   hideCart()
                 )
                 : toast.warning("Your cart is empty!", { duration: 1000 })

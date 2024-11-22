@@ -189,7 +189,7 @@ const Header = () => {
                 className="account-icon head-icons"
               />
             </Link>
-            {true && (
+            {isToken && (
               <ul className="dropdown-content account-dropdown">
                 <li>
                   <Link to="/orders">Orders</Link>

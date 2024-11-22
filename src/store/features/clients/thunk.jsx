@@ -13,3 +13,29 @@ export const clientsThunk = createAsyncThunk('clients/getClient', async ({ clien
     return rejectWithValue(err.response?.data || "An error occurred");
   }
 })
+
+export const addNewAddressThunk = createAsyncThunk('clients/addNewAddress', async ({ clientId, newAddress }, { rejectWithValue }) => {
+  try {
+    const response = api.post(`/clients/add-deliveryAddress/${clientId}`, { newAddress }).then((res) => {
+      return res.data;
+    }).catch((error) => {
+      return error
+    })
+    return response;
+  } catch {
+    return rejectWithValue(err.response?.data || "An error occurred");
+  }
+})
+
+export const updateAddressThunk = createAsyncThunk('clients/updateAddress', async ({ clientId, address }, { rejectWithValue }) => {
+  try {
+    const response = api.patch(`/clients/update-deliveryAddress/${clientId}`, { address }).then((res) => {
+      return res.data;
+    }).catch((error) => {
+      return error
+    })
+    return response;
+  } catch {
+    return rejectWithValue(err.response?.data || "An error occurred");
+  }
+})
