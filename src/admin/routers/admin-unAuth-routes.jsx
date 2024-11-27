@@ -1,6 +1,6 @@
-import AdminUnAuthGuard from "../components/auth/guards/admin-unAuth-guard";
-import Login from "../pages/auth/login/login";
-import Register from "../pages/auth/register/register";
+import AdminUnAuthGuard from "../../admin/components/auth/guards/admin-unAuth-guard";
+import Login from "../../admin/pages/auth/login/login";
+import Register from "../../admin/pages/auth/register/register";
 
 const AdminUnAuthRoutes = [
   {

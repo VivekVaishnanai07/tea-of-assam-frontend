@@ -19,3 +19,20 @@ body,
 .d-flex {
   display: flex !important;
 }
+
+.admin-penal-container {
+  color: rgb(243 244 246 / 1);
+  overflow: hidden;
+  background-color: rgb(17 24 39 / 1);
+  height: 100vh;
+  display: flex;
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+}
+
+.admin-body {
+  background-color: rgb(17 24 39 / 1);
+  overflow: auto;
+  z-index: 10;
+  position: relative;
+  flex: 1 1 0%;
+}
