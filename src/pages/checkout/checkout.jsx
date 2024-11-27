@@ -65,7 +65,7 @@ function Checkout() {
 
   useEffect(() => {
     const subtotal = cartItems.reduce((total, item) => {
-      const itemPrice = item.price ? parseFloat(item.price.substring(1)) : 0;
+      const itemPrice = item.price ? item.price : 0;
       return total + item.quantity * itemPrice;
     }, 0);
 
@@ -163,7 +163,7 @@ function Checkout() {
           "id": element.product_id,
           "name": element.name,
           "quantity": element.quantity,
-          "total-price": (parseFloat(element.price.substring(1)) * element.quantity).toFixed(2)
+          "total-price": (element.price * element.quantity)
         })
       })
       console.log("cartItems----->", products);
@@ -281,10 +281,7 @@ function Checkout() {
                       {item.name} x {item.quantity}
                     </span>
                     <span>
-                      $
-                      {(
-                        parseFloat(item.price.substring(1)) * item.quantity
-                      ).toFixed(2)}
+                      ${item.price * item.quantity}
                     </span>
                   </div>
                 ))}

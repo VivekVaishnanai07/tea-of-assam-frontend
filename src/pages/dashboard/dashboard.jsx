@@ -106,7 +106,7 @@ const Dashboard = () => {
                     </Link>
                   </h3>
                   <p className="product-size">{item.size}</p>
-                  <p className="product-price">{item.price}</p>
+                  <p className="product-price">${item.price}</p>
                   <div>
                     <button
                       className="padd-to-wish"
@@ -185,7 +185,7 @@ const Dashboard = () => {
                     <h2 className="gift-name">{item.name}</h2>
                   </Link>
                   <h3 className="gift-size">{item.size}</h3>
-                  <h3 className="gift-price">{item.price}</h3>
+                  <h3 className="gift-price">${item.price}</h3>
 
                   <div className="gift-btns">
                     <button

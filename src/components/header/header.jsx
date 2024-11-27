@@ -95,6 +95,12 @@ const Header = () => {
     }
   };
 
+  const logout = () => {
+    localStorage.removeItem("clientToken");
+    navigate("/login");
+    window.location.reload();
+  }
+
   return (
     <div className="header-container">
       <header className="header">
@@ -195,7 +201,7 @@ const Header = () => {
                   <Link to="/orders">Orders</Link>
                 </li>
                 <li>
-                  <Link to="/login">Log Out</Link>
+                  <Link onClick={logout}>Log Out</Link>
                 </li>
               </ul>
             )}

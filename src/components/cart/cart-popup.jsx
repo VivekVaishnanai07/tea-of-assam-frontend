@@ -48,7 +48,7 @@ const CartPopup = () => {
 
   // Subtotal calculation
   const subtotal = cartItems.reduce((total, item) => {
-    const itemPrice = item.price ? parseFloat(item.price.substring(1)) : 0; // Remove '$' and convert to number
+    const itemPrice = item.price ? item.price : 0; // Remove '$' and convert to number
     return total + item.quantity * itemPrice; // Multiply price by quantity and accumulate
   }, 0);
 
@@ -81,7 +81,7 @@ const CartPopup = () => {
                 </div>
               </div>
               <div className="price-delete">
-                <p>${(parseFloat(item.price.substring(1)) * item.quantity).toFixed(2)}</p>
+                <p>${item.price * item.quantity}</p>
                 <img src={deleteImg} onClick={() => handleRemoveFromCart(item.product_id)} />
               </div>
             </div>
@@ -90,7 +90,7 @@ const CartPopup = () => {
         <div className="popup-bottom">
           <div className="subtotal">
             <p>Subtotal</p>
-            <p>${subtotal.toFixed(2)}</p>
+            <p>${subtotal}</p>
           </div>
 
           <button

@@ -93,9 +93,18 @@ const NewCheckout = () => {
       if (selectedAddress === null) {
         setSelectedAddress(userData.deliveryAddresses[0]);
       }
-      setClientDetails();
+      setClientDetails({
+        name: "",
+        mobile: "",
+        zip: "",
+        locality: "",
+        streetAddress: "",
+        city: "",
+        state: "",
+        type: "home"
+      });
     }
-  }, [userData.deliveryAddresses])
+  }, [userData.deliveryAddresses, selectedAddress])
 
   useEffect(() => {
     if (activeSection === 4) {
@@ -126,7 +135,7 @@ const NewCheckout = () => {
     if (cartItems && cartItems.length > 0) {
       setCartCount(cartItems.length);
       const total = cartItems.reduce((acc, item) => {
-        const itemTotal = parseFloat(item.price.substring(1)) * item.quantity;
+        const itemTotal = item.price * item.quantity;
         return acc + itemTotal;
       }, 0);
       setTotalAmount(total);
@@ -139,7 +148,7 @@ const NewCheckout = () => {
     setActiveSection(index);
   };
 
-  const Logout = () => {
+  const logout = () => {
     localStorage.removeItem("clientToken");
     navigate("/login");
     window.location.reload();
@@ -438,7 +447,8 @@ const NewCheckout = () => {
       if (userInput === captchaText) {
         const orderData = {
           clientId: userData._id,
-          products: cartItems.map(({ image, ...rest }) => rest),
+          email: userData.email,
+          products: cartItems,
           orderTotal: totalAmount,
           orderStatus: "Prepare",
           shippingAddress: selectedAddress,
@@ -449,9 +459,18 @@ const NewCheckout = () => {
           amount: totalAmount + platformCharge,
           transaction_id: generateTransactionID()
         };
-        dispatch(placeOrderThunk(orderData))
-        localStorage.setItem('orderPlaced', 'true');
-        navigate("/order-place");
+        dispatch(placeOrderThunk(orderData)).unwrap()
+          .then((response) => {
+            if (response.orderId) {
+              localStorage.setItem('orderPlaced', 'true');
+              dispatch(getCartProductsList(user.id));
+              navigate('/order-place', { state: { orderId: response.orderId } });
+            }
+          })
+          .catch((error) => {
+            toast.error("Order placement failed. Please try again.");
+            console.error(error);
+          });
       } else {
         toast.info('Incorrect CAPTCHA. Reloading...');
         initializeCaptcha();
@@ -459,10 +478,64 @@ const NewCheckout = () => {
       }
     } else if (paymentMethod === "CARD") {
       if (validateCardDetails()) {
-        navigate("/order-place");
+        const orderData = {
+          clientId: userData._id,
+          email: userData.email,
+          products: cartItems,
+          orderTotal: totalAmount,
+          orderStatus: "Prepare",
+          shippingAddress: selectedAddress,
+          shippingMethod: "Standard",
+          shippingStatus: "In Transit",
+          trackingNumber: generateTrackingNumber(),
+          paymentMethod: paymentMethod,
+          amount: totalAmount + platformCharge,
+          transaction_id: generateTransactionID(),
+          cardNumber: cardDetails.cardNumber,
+          cardExpiryDate: cardDetails.expiryDate,
+          cvv: cardDetails.cvv
+        };
+        dispatch(placeOrderThunk(orderData)).unwrap()
+          .then((response) => {
+            if (response.orderId) {
+              localStorage.setItem('orderPlaced', 'true');
+              dispatch(getCartProductsList(user.id));
+              navigate('/order-place', { state: { orderId: response.orderId } });
+            }
+          })
+          .catch((error) => {
+            toast.error("Order placement failed. Please try again.");
+            console.error(error);
+          });
       }
     } else if (paymentMethod === "UPI") {
-      navigate("/order-place");
+      const orderData = {
+        clientId: userData._id,
+        email: userData.email,
+        products: cartItems,
+        orderTotal: totalAmount,
+        orderStatus: "Prepare",
+        shippingAddress: selectedAddress,
+        shippingMethod: "Standard",
+        shippingStatus: "In Transit",
+        trackingNumber: generateTrackingNumber(),
+        paymentMethod: paymentMethod,
+        amount: totalAmount + platformCharge,
+        transaction_id: generateTransactionID(),
+        upiId: upiValue
+      };
+      dispatch(placeOrderThunk(orderData)).unwrap()
+        .then((response) => {
+          if (response.orderId) {
+            localStorage.setItem('orderPlaced', 'true');
+            dispatch(getCartProductsList(user.id));
+            navigate('/order-place', { state: { orderId: response.orderId } });
+          }
+        })
+        .catch((error) => {
+          toast.error("Order placement failed. Please try again.");
+          console.error(error);
+        });
     }
   }
 
@@ -510,7 +583,7 @@ const NewCheckout = () => {
                       <span className="user-number">{userData.mobileNumber}</span>
                     </div>
                     <div className="mb-12">
-                      <span className="logout-option" onClick={Logout}>Logout & Sign in to another account</span>
+                      <span className="logout-option" onClick={logout}>Logout & Sign in to another account</span>
                     </div>
                     <div className="mb-12">
                       <button className="primary-btn" onClick={() => toggleSection(2)}>
@@ -979,7 +1052,7 @@ const NewCheckout = () => {
                             <p>{item.size}</p>
                           </div>
                           <div className="horizontal-align">
-                            <p>${(parseFloat(item.price.substring(1)) * item.quantity).toFixed(2)}</p>
+                            <p>${item.price * item.quantity}</p>
                             <div className="popup-counter">
                               <button
                                 onClick={() => handleDecreaseQuantity(item.product_id)}

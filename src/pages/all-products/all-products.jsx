@@ -47,7 +47,7 @@ const AllProducts = () => {
                 </Link>
               </h3>
               <p className="all-product-size">{item.size}</p>
-              <p className="all-product-price">{item.price}</p>
+              <p className="all-product-price">${item.price}</p>
               <div className="all-products-btns">
                 <button
                   className="all-padd-to-wish"

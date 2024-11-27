@@ -1,4 +1,5 @@
 import axios from "axios";
+import { isBefore, isToday, parse } from "date-fns";
 
 // role base 
 export const roles = {
@@ -55,4 +56,31 @@ export function generateTransactionID() {
     Math.random().toString(36).charAt(2) // Random alphanumeric characters
   ).join('').toUpperCase();
   return `${prefix}${randomPart}`;
+}
+
+
+export const formatPrice = (value) => {
+  return new Intl.NumberFormat('en-IN', {
+    maximumFractionDigits: 0, // No decimal points
+  }).format(value);
+}
+
+export function getDeliveryStatus(orderDateString) {
+  // Parse the order date string into a Date object
+  const currentYear = new Date().getFullYear();
+  const orderDate = new Date(`${orderDateString} ${currentYear}`);
+  const currentDate = new Date();
+
+  // Remove time part for accurate comparison (only compare dates)
+  currentDate.setHours(0, 0, 0, 0);
+  orderDate.setHours(0, 0, 0, 0);
+
+  // Compare dates and return the status
+  if (currentDate.getTime() === orderDate.getTime()) {
+    return "Today Delivered";
+  }
+  if (currentDate > orderDate) {
+    return "Delivered";
+  }
+  return orderDateString;
 }
