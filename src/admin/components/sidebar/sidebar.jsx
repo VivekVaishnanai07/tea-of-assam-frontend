@@ -5,13 +5,13 @@ import { Link } from "react-router-dom";
 import "./sidebar.css";
 
 const SIDEBAR_ITEMS = [
-  { name: "Overview", icon: BarChart2, color: "#6366f1", href: "/" },
-  { name: "Products", icon: ShoppingBag, color: "#8B5CF6", href: "/products" },
-  { name: "Users", icon: Users, color: "#EC4899", href: "/users" },
-  { name: "Sales", icon: DollarSign, color: "#10B981", href: "/sales" },
-  { name: "Orders", icon: ShoppingCart, color: "#F59E0B", href: "/orders" },
-  { name: "Analytics", icon: TrendingUp, color: "#3B82F6", href: "/analytics" },
-  { name: "Settings", icon: Settings, color: "#6EE7B7", href: "/settings" },
+  { name: "Overview", icon: BarChart2, color: "#6366f1", href: "/admin/dashboard" },
+  { name: "Products", icon: ShoppingBag, color: "#8B5CF6", href: "/admin/products" },
+  { name: "Users", icon: Users, color: "#EC4899", href: "/admin/users" },
+  { name: "Sales", icon: DollarSign, color: "#10B981", href: "/admin/sales" },
+  { name: "Orders", icon: ShoppingCart, color: "#F59E0B", href: "/admin/orders" },
+  { name: "Analytics", icon: TrendingUp, color: "#3B82F6", href: "/admin/analytics" },
+  { name: "Settings", icon: Settings, color: "#6EE7B7", href: "/admin/settings" },
 ];
 
 const Sidebar = () => {

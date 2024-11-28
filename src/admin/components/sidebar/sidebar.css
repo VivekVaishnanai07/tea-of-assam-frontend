@@ -24,6 +24,9 @@
     text-transform: none;
     color: white;
     border-width: 0px;
+    align-items: center;
+    margin-left: 4px;
+    display: flex;
   }
 
   .menu-btn:hover {

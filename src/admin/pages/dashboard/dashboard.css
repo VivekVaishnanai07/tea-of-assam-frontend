@@ -1,0 +1,77 @@
+.admin-dashboard-wrapper {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  .top-section {
+    width: 100%;
+    margin-bottom: 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .card-item {
+    background-color: rgb(31 41 55 / 0.5);
+    border-radius: 0.5rem;
+    border: 1px solid rgb(55 65 81 / 1);
+    padding: 1.5rem;
+    width: 25%;
+  }
+
+  .card-header {
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25rem;
+    display: flex;
+    color: rgb(229 231 235 / 1);
+    align-items: center;
+  }
+
+  .card-content {
+    color: rgb(243 244 246 / 1);
+    font-weight: 600;
+    font-size: 27px;
+    margin-top: 0.5rem;
+  }
+
+  .middle-section {
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  .sales-overview-section,
+  .category-distribution-section,
+  .sales-by-channel-section {
+    padding: 1.25rem;
+    background-color: rgb(31 41 55 / 0.5);
+    border: 1px solid rgb(55 65 81 / 1);
+    border-radius: 0.75rem;
+    width: 50%;
+  }
+
+  .sales-overview-title,
+  .category-distribution-title,
+  .sales-by-channel-title {
+    color: rgb(243 244 246 / 1);
+    font-weight: 500;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .sales-overview-content,
+  .category-distribution-content,
+  .sales-by-channel-content {
+    height: 20rem;
+  }
+
+  .sales-by-channel-section {
+    width: 100% !important;
+    margin-top: 1.25rem;
+  }
+}
