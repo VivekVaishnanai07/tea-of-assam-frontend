@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
-import { AlertTriangle, ChevronLeft, ChevronRight, DollarSign, Edit, Package, Search, Trash2, TrendingUp } from "lucide-react";
+import { AlertTriangle, DollarSign, Edit, Package, Trash2, TrendingUp } from "lucide-react";
 import React, { useState } from 'react';
+import Table from "../../components/table/table";
 import "./products.css";
 
 const Product_Data = [
@@ -51,9 +51,6 @@ const Products = () => {
     return filteredProducts.slice(start, start + itemsPerPage);
   };
 
-  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
   const actions = [
     { icon: <Edit size={18} />, className: 'edit-btn', onClick: () => handleEdit() },
     { icon: <Trash2 size={18} />, className: 'delete-btn', onClick: (row) => handleDelete(row.id) },
@@ -87,96 +84,7 @@ const Products = () => {
           <div className="card-content">$654,310</div>
         </div>
       </div>
-      <motion.div
-        className='table-section'
-        initial={{ opacity: 0, y: 25 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.2, delay: 0.2 }}
-      >
-        {/* Header and Search */}
-        <div className='table-header-section'>
-          <h2 className='header-title'>Products</h2>
-          <div className='search-bar-box'>
-            <Search className='search-icon' size={20} />
-            <input
-              className='search-bar'
-              type="text"
-              placeholder='Search Product...'
-              onChange={SearchHandler}
-              value={searchTerm}
-            />
-          </div>
-        </div>
-        <div className='overview-auto'>
-          <table className='w-100'>
-            <thead>
-              <tr>
-                <th className='table-header-label'>Name</th>
-                <th className='table-header-label'>Category</th>
-                <th className='table-header-label'>Price</th>
-                <th className='table-header-label'>Stock</th>
-                <th className='table-header-label'>Sales</th>
-                <th className='table-header-label'>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {getCurrentPageProducts().map((product) => (
-                <motion.tr
-                  className='border-top'
-                  key={product.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 1.1, delay: 0.2 }}
-                >
-                  <td className='table-content-item'>{product.name}</td>
-                  <td className='table-content-item'>{product.category}</td>
-                  <td className='table-content-item'>$ {product.price.toFixed(2)}</td>
-                  <td className='table-content-item'>{product.stock}</td>
-                  <td className='table-content-item'>{product.sales}</td>
-                  <td className='table-content-item'>
-                    <div className='action-item'>
-                      <button className='edit-btn' onClick={() => handleEdit(product)}>
-                        <Edit size={18} />
-                      </button>
-                      <button className='delete-btn' onClick={() => handleDelete(product.id)}>
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
-                  </td>
-                </motion.tr>
-
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Enhanced Pagination Controls */}
-        <div className='pagination-section'>
-          <div className='pagination-content'>
-            {currentPage !== 1 && (
-              <button
-                onClick={() => paginate(currentPage - 1)}
-                className={`pagination-btn ${currentPage !== 1 && "active-pagination-btn"}`}
-              >
-                <ChevronLeft className='pagination-btn-icon' size={18} />
-              </button>
-            )}
-            <span className='pagination-text'>Page {currentPage} of {totalPages}</span>
-            {
-              currentPage !== totalPages && (
-                <button
-                  onClick={() => paginate(currentPage + 1)}
-                  className={`pagination-btn ${currentPage !== totalPages && "active-pagination-btn"}`}
-                >
-                  <ChevronRight className='pagination-btn-icon' size={18} />
-                </button>
-              )
-            }
-          </div>
-
-          <div>Total Products: {filteredProducts.length}</div>
-        </div>
-      </motion.div>
+      <Table tableTitle="Products" searchBarValue={searchTerm} searchBarOnChange={SearchHandler} columns={columns} data={getCurrentPageProducts()} actions={actions} currentPage={currentPage} setCurrentPage={setCurrentPage} totalItems={filteredProducts.length} />
     </div>
   )
 }

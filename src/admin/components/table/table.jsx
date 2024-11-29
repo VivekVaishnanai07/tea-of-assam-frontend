@@ -2,7 +2,10 @@ import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 import "./table.css";
 
-const Table = ({ tableTitle, searchBarValue, searchBarOnChange, columns, data, actions, currentPage, totalPages, onPageChange, totalItems }) => {
+const Table = ({ tableTitle, searchBarValue, searchBarOnChange, columns, data, actions, currentPage, setCurrentPage, totalItems }) => {
+  const itemsPerPage = 5;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <motion.div
@@ -75,7 +78,7 @@ const Table = ({ tableTitle, searchBarValue, searchBarOnChange, columns, data, a
         <div className='pagination-content'>
           {currentPage !== 1 && (
             <button
-              onClick={() => onPageChange(currentPage - 1)}
+              onClick={() => paginate(currentPage - 1)}
               className={`pagination-btn ${currentPage !== 1 && "active-pagination-btn"}`}
             >
               <ChevronLeft className='pagination-btn-icon' size={18} />
@@ -85,7 +88,7 @@ const Table = ({ tableTitle, searchBarValue, searchBarOnChange, columns, data, a
           {
             currentPage !== totalPages && (
               <button
-                onClick={() => onPageChange(currentPage + 1)}
+                onClick={() => paginate(currentPage + 1)}
                 className={`pagination-btn ${currentPage !== totalPages && "active-pagination-btn"}`}
               >
                 <ChevronRight className='pagination-btn-icon' size={18} />
