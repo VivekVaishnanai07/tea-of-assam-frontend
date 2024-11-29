@@ -1,23 +1,24 @@
 import { motion } from 'framer-motion';
 import { BarChart2, ShoppingBag, Users, Zap } from "lucide-react";
-import { Bar, BarChart, CartesianGrid, Cell, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, Cell, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import Card from '../../components/card/card';
+import CommonLineChart from "../../components/common-line-chart/common-line-chart";
 import CommonPieChart from "../../components/common-pie-chart/common-pie-chart";
 import "./dashboard.css";
 
 const Sales_Data = [
-  { name: "Aug", Sales: 3000 },
-  { name: "Sep", Sales: 3700 },
-  { name: "Oct", Sales: 5200 },
-  { name: "Nov", Sales: 4600 },
-  { name: "Dec", Sales: 5400 },
-  { name: "Jan", Sales: 7300 },
-  { name: "Feb", Sales: 6100 },
-  { name: "Mar", Sales: 5600 },
-  { name: "Apr", Sales: 6600 },
-  { name: "May", Sales: 6200 },
-  { name: "Jun", Sales: 7100 },
-  { name: "Jul", Sales: 7700 },
+  { name: "Aug", value: 3000 },
+  { name: "Sep", value: 3700 },
+  { name: "Oct", value: 5200 },
+  { name: "Nov", value: 4600 },
+  { name: "Dec", value: 5400 },
+  { name: "Jan", value: 7300 },
+  { name: "Feb", value: 6100 },
+  { name: "Mar", value: 5600 },
+  { name: "Apr", value: 6600 },
+  { name: "May", value: 6200 },
+  { name: "Jun", value: 7100 },
+  { name: "Jul", value: 7700 },
 ];
 
 const Category_Data = [
@@ -52,38 +53,7 @@ const Dashboard = () => {
         <Card icon={BarChart2} title="Total Revenue" color="#10b981" data="$98,765" />
       </div>
       <div className="middle-section">
-        <motion.div
-          className='sales-overview-section'
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <h2 className='sales-overview-title'>Sales Overview</h2>
-          <div className='sales-overview-content'>
-            <ResponsiveContainer width="100%" height={"100%"}>
-              <LineChart data={Sales_Data}>
-                <CartesianGrid strokeDasharray={'3 3'} stroke="#4b5563" />
-                <XAxis dataKey={"name"} stroke="#9ca3af" />
-                <YAxis stroke="#9ca3af" />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "rgba(31, 45, 55, 0.8)",
-                    borderColor: "#4b5563",
-                  }}
-                  itemStyle={{ color: "#e5e7eb" }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="Sales"
-                  stroke="#6366f1"
-                  strokeWidth={3}
-                  dot={{ fill: "#6366f1", strokeWidth: 2, r: 5 }}
-                  activeDot={{ r: 8, strokeWidth: 2 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </motion.div>
+        <CommonLineChart name="Sales Overview" data={Sales_Data} />
         <CommonPieChart name="Category Distribution" value={Category_Data} colors={COLORS} width="50%" />
       </div>
       <div className='sales-by-channel-section'>

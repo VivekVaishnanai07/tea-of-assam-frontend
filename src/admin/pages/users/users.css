@@ -89,7 +89,6 @@
     gap: 1.25rem;
   }
 
-  .user-growth-section,
   .user-activity-heatMap-section {
     padding: 1.25rem;
     background-color: rgb(31 41 55 / 0.5);
@@ -98,7 +97,6 @@
     width: 50%;
   }
 
-  .user-growth-title,
   .user-activity-heatMap-title {
     color: rgb(243 244 246 / 1);
     font-weight: 500;
@@ -107,7 +105,6 @@
     margin-bottom: 1rem;
   }
 
-  .user-growth-content,
   .user-activity-heatMap-content {
     height: 20rem;
   }

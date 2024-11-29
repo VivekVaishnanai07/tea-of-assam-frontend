@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion';
 import { Edit, Trash2, UserCheck, UserIcon, UserPlus, UserX } from "lucide-react";
 import { useState } from "react";
-import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import Card from "../../components/card/card";
+import CommonLineChart from "../../components/common-line-chart/common-line-chart";
 import CommonPieChart from "../../components/common-pie-chart/common-pie-chart";
 import Table from "../../components/table/table";
 import "./users.css";
@@ -95,12 +96,12 @@ const Users = () => {
   const COLORS = ['#8884d8', "#82ca9d", "#ffc658", "#ff8042", "#0088fe"];
 
   const User_Growth_Data = [
-    { name: "Aug", Users: 800 },
-    { name: "Sep", Users: 1500 },
-    { name: "Oct", Users: 1600 },
-    { name: "Nov", Users: 1950 },
-    { name: "Dec", Users: 3300 },
-    { name: "Jan", Users: 4000 },
+    { name: "Aug", value: 800 },
+    { name: "Sep", value: 1500 },
+    { name: "Oct", value: 1600 },
+    { name: "Nov", value: 1950 },
+    { name: "Dec", value: 3300 },
+    { name: "Jan", value: 4000 },
   ]
 
   const User_Activity_Data = [
@@ -132,39 +133,7 @@ const Users = () => {
       <Table tableTitle="Users" searchBarValue={searchTerm} searchBarOnChange={SearchHandler} columns={columns} data={getCurrentPageUsers()} actions={actions} currentPage={currentPage} setCurrentPage={setCurrentPage} totalItems={filteredUsers.length} />
 
       <div className="bottom-section">
-        <motion.div
-          className='user-growth-section'
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.3, delay: 0.7 }}
-        >
-          <h2 className='user-growth-title'>User Growth</h2>
-
-          <div className='user-growth-content'>
-            <ResponsiveContainer width={"100%"} height={"100%"}>
-              <LineChart data={User_Growth_Data}>
-                <CartesianGrid strokeDasharray={'3 3'} stroke='#374151' />
-                <XAxis dataKey={"name"} stroke='#9ca3af' />
-                <YAxis stroke='#9ca3af' />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "rgba(31, 45, 55, 0.8)",
-                    borderColor: "#4b5563"
-                  }}
-                  itemStyle={{ color: "#e5e7eb" }}
-                />
-                <Line
-                  type="linear"
-                  dataKey='Users'
-                  stroke='#8b5cf6'
-                  strokeWidth={2}
-                  dot={{ fill: '#8b5cf6', strokeWidth: 2, r: 4 }}
-                  activeDot={{ r: 8 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </motion.div>
+        <CommonLineChart name="User Growth" data={User_Growth_Data} />
         <motion.div
           className='user-activity-heatMap-section'
           initial={{ opacity: 0, y: 25 }}
