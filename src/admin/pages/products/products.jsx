@@ -1,5 +1,6 @@
 import { AlertTriangle, DollarSign, Edit, Package, Trash2, TrendingUp } from "lucide-react";
 import React, { useState } from 'react';
+import Card from "../../components/card/card";
 import Table from "../../components/table/table";
 import "./products.css";
 
@@ -59,30 +60,10 @@ const Products = () => {
   return (
     <div className="admin-products-wrapper">
       <div className="top-section">
-        <div className="card-item">
-          <div className="card-header">
-            <Package size={22} style={{ color: "#6366f1", marginRight: "0.5rem" }} />
-            Total Products</div>
-          <div className="card-content">4,321</div>
-        </div>
-        <div className="card-item">
-          <div className="card-header">
-            <TrendingUp size={22} style={{ color: "#10b981", marginRight: "0.5rem" }} />
-            Top Selling</div>
-          <div className="card-content">69</div>
-        </div>
-        <div className="card-item">
-          <div className="card-header">
-            <AlertTriangle size={22} style={{ color: "#f59e0b", marginRight: "0.5rem" }} />
-            Low Stock</div>
-          <div className="card-content">32</div>
-        </div>
-        <div className="card-item">
-          <div className="card-header">
-            <DollarSign size={22} style={{ color: "#ef4444", marginRight: "0.5rem" }} />
-            Total Revenue</div>
-          <div className="card-content">$654,310</div>
-        </div>
+        <Card icon={Package} title="Total Products" color="#6366f1" data="4,321" />
+        <Card icon={TrendingUp} title="Top Selling" color="#10b981" data="69" />
+        <Card icon={AlertTriangle} title="Low Stock" color="#f59e0b" data="32" />
+        <Card icon={DollarSign} title="Top Selling" color="#ef4444" data="$654,310" />
       </div>
       <Table tableTitle="Products" searchBarValue={searchTerm} searchBarOnChange={SearchHandler} columns={columns} data={getCurrentPageProducts()} actions={actions} currentPage={currentPage} setCurrentPage={setCurrentPage} totalItems={filteredProducts.length} />
     </div>

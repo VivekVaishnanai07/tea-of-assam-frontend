@@ -1,0 +1,23 @@
+.card-wrapper {
+  background-color: rgb(31 41 55 / 0.5);
+  border-radius: 0.5rem;
+  border: 1px solid rgb(55 65 81 / 1);
+  padding: 1.5rem;
+  width: 25%;
+
+  .card-header {
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25rem;
+    display: flex;
+    color: rgb(229 231 235 / 1);
+    align-items: center;
+  }
+
+  .card-content {
+    color: rgb(243 244 246 / 1);
+    font-weight: 600;
+    font-size: 27px;
+    margin-top: 0.5rem;
+  }
+}

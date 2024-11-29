@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { BarChart2, ShoppingBag, Users, Zap } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import Card from '../../components/card/card';
 import "./dashboard.css";
 
 const Sales_Data = [
@@ -44,30 +45,10 @@ const Dashboard = () => {
   return (
     <div className="admin-dashboard-wrapper">
       <div className="top-section">
-        <div className="card-item">
-          <div className="card-header">
-            <Zap size={22} style={{ color: "#6366f1", marginRight: "0.5rem" }} />
-            Total Orders</div>
-          <div className="card-content">2,521</div>
-        </div>
-        <div className="card-item">
-          <div className="card-header">
-            <Users size={22} style={{ color: "#8b5cf6", marginRight: "0.5rem" }} />
-            Pending Orders</div>
-          <div className="card-content">341</div>
-        </div>
-        <div className="card-item">
-          <div className="card-header">
-            <ShoppingBag size={22} style={{ color: "#ec4899", marginRight: "0.5rem" }} />
-            Completed Orders</div>
-          <div className="card-content">2,180</div>
-        </div>
-        <div className="card-item">
-          <div className="card-header">
-            <BarChart2 size={22} style={{ color: "#10b981", marginRight: "0.5rem" }} />
-            Total Revenue</div>
-          <div className="card-content">$98,765</div>
-        </div>
+        <Card icon={Zap} title="Total Orders" color="#6366f1" data="2,521" />
+        <Card icon={Users} title="Pending Orders" color="#8b5cf6" data="341" />
+        <Card icon={ShoppingBag} title="Completed Orders" color="#ec4899" data="2,180" />
+        <Card icon={BarChart2} title="Total Revenue" color="#10b981" data="$98,765" />
       </div>
       <div className="middle-section">
         <motion.div
