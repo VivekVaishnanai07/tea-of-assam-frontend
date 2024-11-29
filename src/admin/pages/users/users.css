@@ -14,4 +14,113 @@
     align-items: center;
     gap: 1.25rem;
   }
+
+  .green-label {
+    color: rgb(21 128 61 / 1);
+    line-height: 1.25rem;
+    font-weight: 600;
+    font-size: 0.75rem;
+    padding-left: 1rem;
+    display: inline-flex;
+    padding-right: 1rem;
+    background-color: rgb(229 231 235 / 1);
+    border-radius: 9999px;
+  }
+
+  .red-label {
+    color: rgb(234 88 12 / 1);
+    line-height: 1.25rem;
+    font-weight: 600;
+    font-size: 0.75rem;
+    padding-left: 1rem;
+    background-color: rgb(229 231 235 / 1);
+    padding-right: 1rem;
+    border-radius: 9999px;
+    display: inline-flex;
+  }
+
+  .active-status {
+    color: rgb(220 252 231 / 1);
+    line-height: 1.25rem;
+    font-weight: 600;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    background-color: rgb(21 128 61 / 1);
+    font-size: 0.75rem;
+    border-radius: 9999px;
+    display: inline-flex;
+  }
+
+  .inactive-status {
+    color: rgb(254 226 226 / 1);
+    line-height: 1.25rem;
+    font-weight: 600;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    background-color: rgb(185 28 28 / 1);
+    font-size: 0.75rem;
+    border-radius: 9999px;
+    display: inline-flex;
+  }
+
+  .edit-btn {
+    color: rgb(129 140 248 / 1);
+    cursor: pointer;
+    -webkit-appearance: button;
+    background-color: transparent;
+    background-image: none;
+    text-transform: none;
+    border: 0;
+  }
+
+  .delete-btn {
+    color: rgb(239 68 68 / 1);
+    cursor: pointer;
+    -webkit-appearance: button;
+    background-color: transparent;
+    background-image: none;
+    text-transform: none;
+    border: 0;
+  }
+
+
+  .bottom-section {
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  .user-growth-section,
+  .user-activity-heatMap-section,
+  .user-demographics-section {
+    padding: 1.25rem;
+    background-color: rgb(31 41 55 / 0.5);
+    border: 1px solid rgb(55 65 81 / 1);
+    border-radius: 0.75rem;
+    width: 50%;
+  }
+
+  .user-growth-title,
+  .user-activity-heatMap-title,
+  .user-demographics-title {
+    color: rgb(243 244 246 / 1);
+    font-weight: 500;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .user-growth-content,
+  .user-activity-heatMap-content,
+  .user-demographics-content {
+    height: 20rem;
+  }
+
+  .user-demographics-section {
+    width: 100% !important;
+    margin-top: 1.25rem;
+  }
+
+  .user-demographics-content {
+    height: 300px !important;
+  }
 }

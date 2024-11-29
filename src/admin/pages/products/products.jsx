@@ -53,8 +53,8 @@ const Products = () => {
   };
 
   const actions = [
-    { icon: <Edit size={18} />, className: 'edit-btn', onClick: () => handleEdit() },
-    { icon: <Trash2 size={18} />, className: 'delete-btn', onClick: (row) => handleDelete(row.id) },
+    { icon: <Edit size={18} />, className: 'edit-btn', onClick: () => console.log("Edit") },
+    { icon: <Trash2 size={18} />, className: 'delete-btn', onClick: (row) => console.log("Delete", row.id) },
   ];
 
   return (
