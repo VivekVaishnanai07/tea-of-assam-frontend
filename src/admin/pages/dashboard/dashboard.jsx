@@ -1,7 +1,6 @@
-import { motion } from 'framer-motion';
 import { BarChart2, ShoppingBag, Users, Zap } from "lucide-react";
-import { Bar, BarChart, CartesianGrid, Cell, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import Card from '../../components/card/card';
+import CommonBarChart from "../../components/common/bar-chart/bar-chart";
 import CommonLineChart from "../../components/common/line-chart/line-chart";
 import CommonPieChart from "../../components/common/pie-chart/pie-chart";
 import "./dashboard.css";
@@ -57,39 +56,7 @@ const Dashboard = () => {
         <CommonPieChart name="Category Distribution" value={Category_Data} colors={COLORS} width="50%" />
       </div>
       <div className='sales-by-channel-section'>
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-        >
-          <h2 className='sales-by-channel-title'>Sales by Channel</h2>
-          <div className='sales-by-channel-content'>
-            <ResponsiveContainer>
-              <BarChart
-                data={Sales_Channel_Data}
-              >
-                <CartesianGrid strokeDasharray='3 3' stroke='#4b5563' />
-                <XAxis dataKey="name" stroke='#9ca3af' />
-                <YAxis stroke='#9ca3af' />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "rgba(31, 41, 55, 0.8)",
-                    borderColor: "#4b5563",
-                  }}
-                  itemStyle={{ color: "#e5e7eb" }}
-                />
-                <Legend />  {/* if want to remove text {"Value"} at the most bottom the remove this legend  */}
-                <Bar
-                  dataKey={"Value"} fill='#8884d8'
-                >
-                  {Sales_Channel_Data.map((item, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS1[index % COLORS1.length]} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </motion.div>
+        <CommonBarChart name="Sales by Channel" value={Sales_Channel_Data} colors={COLORS1} bars={[{ dataKey: "Value", fill: '#8884d8' }]} width="100%" />
       </div>
     </div>
   );

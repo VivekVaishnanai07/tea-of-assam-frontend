@@ -1,8 +1,7 @@
-import { motion } from 'framer-motion';
 import { Edit, Trash2, UserCheck, UserIcon, UserPlus, UserX } from "lucide-react";
 import { useState } from "react";
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import Card from "../../components/card/card";
+import CommonBarChart from "../../components/common/bar-chart/bar-chart";
 import CommonLineChart from "../../components/common/line-chart/line-chart";
 import CommonPieChart from "../../components/common/pie-chart/pie-chart";
 import Table from "../../components/table/table";
@@ -134,40 +133,15 @@ const Users = () => {
 
       <div className="bottom-section">
         <CommonLineChart name="User Growth" data={User_Growth_Data} />
-        <motion.div
-          className='user-activity-heatMap-section'
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.3, delay: 0.7 }}
-        >
-          <h2 className='user-activity-heatMap-title'>User Activity HeatMap</h2>
-
-          <div className='user-activity-heatMap-content'>
-            <ResponsiveContainer>
-              <BarChart data={User_Activity_Data}>
-                <CartesianGrid strokeDasharray='3, 3' stroke='#374151' />
-                <XAxis dataKey="name" stroke='#9ca3af' />
-                <YAxis stroke='#9ca3af' />
-
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "rgba(31, 45, 55, 0.8)",
-                    borderColor: "#4b5563"
-                  }}
-                  itemStyle={{ color: "#e5e7eb" }}
-                />
-                <Legend />
-                <Bar dataKey="0-4" stackId='a' fill='#5B82F7' />
-                <Bar dataKey="4-8" stackId='a' fill='#8B5CF6' />
-                <Bar dataKey="8-12" stackId='a' fill='#EC4899' />
-                <Bar dataKey="12-16" stackId='a' fill='#10B981' />
-                <Bar dataKey="16-20" stackId='a' fill='#F59E0B' />
-                <Bar dataKey="20-24" stackId='a' fill='#6EE7B7' />
-              </BarChart>
-            </ResponsiveContainer>
-
-          </div>
-        </motion.div>
+        <CommonBarChart name="User Activity HeatMap" value={User_Activity_Data} bars={[
+          { dataKey: "0-4", fill: "#5B82F7" },
+          { dataKey: "4-8", fill: "#8B5CF6" },
+          { dataKey: "8-12", fill: "#EC4899" },
+          { dataKey: "12-16", fill: "#10B981" },
+          { dataKey: "16-20", fill: "#F59E0B" },
+          { dataKey: "20-24", fill: "#6EE7B7" },
+        ]}
+          stacked={true} />
       </div>
       <div className='user-demographics-section'>
         <CommonPieChart name="User Demographics" value={User_Demographic_Data} colors={COLORS} width="100%" />

@@ -58,24 +58,4 @@
     margin-top: 1.75rem;
     margin-bottom: 1.75rem;
   }
-
-  .daily-sales-trend-section {
-    padding: 1.25rem;
-    background-color: rgb(31 41 55 / 0.5);
-    border: 1px solid rgb(55 65 81 / 1);
-    border-radius: 0.75rem;
-    width: 50%;
-  }
-
-  .daily-sales-trend-title {
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-    margin-bottom: 1rem;
-    color: rgb(243 244 246 / 1);
-    font-weight: 600;
-  }
-
-  .daily-sales-trend-content {
-    height: 20rem;
-  }
 }

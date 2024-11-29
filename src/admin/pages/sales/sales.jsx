@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion';
 import { CreditCard, DollarSign, ShoppingCart, TrendingUp } from "lucide-react";
 import { useState } from "react";
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Area, AreaChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import Card from "../../components/card/card";
+import CommonBarChart from '../../components/common/bar-chart/bar-chart';
 import CommonPieChart from '../../components/common/pie-chart/pie-chart';
 import "./sales.css";
 
@@ -93,33 +94,7 @@ const Sales = () => {
       </motion.div>
       <div className='bottom-section'>
         <CommonPieChart name="Sales by Category" value={SalesbyCategory} colors={COLORS} width="50%" />
-        <motion.div
-          className='daily-sales-trend-section'
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: .7, delay: .7 }}
-        >
-          <h2 className='daily-sales-trend-title'>Daily Sales Trend</h2>
-
-          <div className='daily-sales-trend-content'>
-            <ResponsiveContainer>
-              <BarChart data={Daily_Sales_Data}>
-                <CartesianGrid strokeDasharray="3 3" stroke='#374151' />
-                <XAxis dataKey="name" stroke='#9ca3af' />
-                <YAxis stroke='#9ca3af' />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "rgba(31, 41, 55, 0.8)",
-                    borderColor: "#4b5563",
-                  }}
-                  itemStyle={{ color: "#e5e7eb" }}
-                />
-                <Bar dataKey="Sales" fill='#10b981' />
-                <Legend />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </motion.div>
+        <CommonBarChart name="Daily Sales Trend" value={Daily_Sales_Data} bars={[{ dataKey: "Sales", fill: '#10b981' }]} />
       </div>
     </div>
   )
