@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion';
 import { Edit, Trash2, UserCheck, UserIcon, UserPlus, UserX } from "lucide-react";
 import { useState } from "react";
-import { Bar, BarChart, CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import Card from "../../components/card/card";
+import CommonPieChart from "../../components/common-pie-chart/common-pie-chart";
 import Table from "../../components/table/table";
 import "./users.css";
 
@@ -113,11 +114,11 @@ const Users = () => {
   ];
 
   const User_Demographic_Data = [
-    { name: "18-24", value: 20 },
-    { name: "25-34", value: 30 },
-    { name: "35-44", value: 25 },
-    { name: "45-54", value: 15 },
-    { name: "55+", value: 10 },
+    { name: "18-24", Value: 20 },
+    { name: "25-34", Value: 30 },
+    { name: "35-44", Value: 25 },
+    { name: "45-54", Value: 15 },
+    { name: "55+", Value: 10 },
   ];
 
   return (
@@ -200,44 +201,7 @@ const Users = () => {
         </motion.div>
       </div>
       <div className='user-demographics-section'>
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.8, delay: 1.2 }}
-        >
-          <h2 className='user-demographics-title'>User Demographics</h2>
-
-          <div className='user-demographics-content'>
-            <ResponsiveContainer>
-              <PieChart>
-                <Pie
-                  data={User_Demographic_Data}
-                  cx={"50%"}
-                  cy={"50%"}
-                  outerRadius={100}
-                  fill='#8884d8'
-                  labelLine={false}
-                  dataKey="value"
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                >
-                  {User_Demographic_Data.map((items, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "rgba(31, 45, 55, 0.8)",
-                    borderColor: "#4b5563"
-                  }}
-                  itemStyle={{ color: "#e5e7eb" }}
-                />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-
-        </motion.div>
+        <CommonPieChart name="User Demographics" value={User_Demographic_Data} colors={COLORS} width="100%" />
       </div>
     </div>
   )

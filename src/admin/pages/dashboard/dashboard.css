@@ -21,7 +21,6 @@
   }
 
   .sales-overview-section,
-  .category-distribution-section,
   .sales-by-channel-section {
     padding: 1.25rem;
     background-color: rgb(31 41 55 / 0.5);
@@ -31,7 +30,6 @@
   }
 
   .sales-overview-title,
-  .category-distribution-title,
   .sales-by-channel-title {
     color: rgb(243 244 246 / 1);
     font-weight: 500;
@@ -41,7 +39,6 @@
   }
 
   .sales-overview-content,
-  .category-distribution-content,
   .sales-by-channel-content {
     height: 20rem;
   }

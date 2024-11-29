@@ -1,12 +1,10 @@
 import axios from "axios";
-import { isBefore, isToday, parse } from "date-fns";
 
 // role base 
 export const roles = {
   Admin_Role: "admin",
   User_Role: "user"
 }
-
 
 const api = axios.create({
   baseURL: "http://localhost:3300/api"
@@ -15,9 +13,18 @@ const api = axios.create({
 // Request interceptor to add the token to headers
 api.interceptors.request.use(
   (req) => {
-    const token = localStorage.getItem("clientToken");
-    if (token) {
-      req.headers.Authorization = `Bearer ${token}`;
+    // Extract role or endpoint type from request (optional, for finer control)
+    const isAdminRequest = req.url?.includes("/admin");
+    // Decide which token to use
+    const adminToken = localStorage.getItem("adminToken");
+    const clientToken = localStorage.getItem("clientToken");
+
+    if (isAdminRequest && adminToken) {
+      // Add admin token for admin-related requests
+      req.headers.Authorization = `Bearer ${adminToken}`;
+    } else if (clientToken) {
+      // Add client token for general requests
+      req.headers.Authorization = `Bearer ${clientToken}`;
     }
     return req;
   },
@@ -33,8 +40,16 @@ api.interceptors.response.use(
   },
   (error) => {
     if (error.response && error.response.status === 401) {
-      localStorage.removeItem("clientToken");
-      window.location.href = "/login";
+      const isAdminError = error.config.url?.includes("/admin");
+      if (isAdminError) {
+        // Clear admin token and redirect to admin login page
+        localStorage.removeItem("adminToken");
+        window.location.href = "/admin/login";
+      } else {
+        // Clear client token and redirect to user login page
+        localStorage.removeItem("clientToken");
+        window.location.href = "/login";
+      }
     }
     return Promise.reject(error);
   }

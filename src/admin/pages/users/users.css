@@ -90,8 +90,7 @@
   }
 
   .user-growth-section,
-  .user-activity-heatMap-section,
-  .user-demographics-section {
+  .user-activity-heatMap-section {
     padding: 1.25rem;
     background-color: rgb(31 41 55 / 0.5);
     border: 1px solid rgb(55 65 81 / 1);
@@ -100,8 +99,7 @@
   }
 
   .user-growth-title,
-  .user-activity-heatMap-title,
-  .user-demographics-title {
+  .user-activity-heatMap-title {
     color: rgb(243 244 246 / 1);
     font-weight: 500;
     font-size: 1.125rem;
@@ -110,17 +108,11 @@
   }
 
   .user-growth-content,
-  .user-activity-heatMap-content,
-  .user-demographics-content {
+  .user-activity-heatMap-content {
     height: 20rem;
   }
 
   .user-demographics-section {
-    width: 100% !important;
     margin-top: 1.25rem;
-  }
-
-  .user-demographics-content {
-    height: 300px !important;
   }
 }
