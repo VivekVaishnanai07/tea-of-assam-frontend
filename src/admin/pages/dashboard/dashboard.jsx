@@ -2,8 +2,8 @@ import { motion } from 'framer-motion';
 import { BarChart2, ShoppingBag, Users, Zap } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, Cell, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import Card from '../../components/card/card';
-import CommonLineChart from "../../components/common-line-chart/common-line-chart";
-import CommonPieChart from "../../components/common-pie-chart/common-pie-chart";
+import CommonLineChart from "../../components/common/line-chart/line-chart";
+import CommonPieChart from "../../components/common/pie-chart/pie-chart";
 import "./dashboard.css";
 
 const Sales_Data = [

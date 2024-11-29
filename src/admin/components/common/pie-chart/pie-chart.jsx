@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion';
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
-import "./common-pie-chart.css";
+import "./pie-chart.css";
 
 const CommonPieChart = ({ name, value, colors, width }) => {
 
   return (
     <motion.div
-      className='common-pie-chart-wrapper'
+      className='pie-chart-wrapper'
       initial={{ opacity: 0, y: 25 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1.3, delay: .7 }}

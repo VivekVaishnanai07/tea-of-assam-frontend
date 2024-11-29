@@ -3,7 +3,7 @@ import { CreditCard, DollarSign, ShoppingCart, TrendingUp } from "lucide-react";
 import { useState } from "react";
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import Card from "../../components/card/card";
-import CommonPieChart from '../../components/common-pie-chart/common-pie-chart';
+import CommonPieChart from '../../components/common/pie-chart/pie-chart';
 import "./sales.css";
 
 const Monthly_Sales_Data = [

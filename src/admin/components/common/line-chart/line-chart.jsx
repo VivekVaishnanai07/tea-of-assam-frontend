@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import "./common-line-chart.css";
+import "./line-chart.css";
 
 const CommonLineChart = ({ name, data }) => {
   return (

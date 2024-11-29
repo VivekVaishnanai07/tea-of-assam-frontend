@@ -3,8 +3,8 @@ import { Edit, Trash2, UserCheck, UserIcon, UserPlus, UserX } from "lucide-react
 import { useState } from "react";
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import Card from "../../components/card/card";
-import CommonLineChart from "../../components/common-line-chart/common-line-chart";
-import CommonPieChart from "../../components/common-pie-chart/common-pie-chart";
+import CommonLineChart from "../../components/common/line-chart/line-chart";
+import CommonPieChart from "../../components/common/pie-chart/pie-chart";
 import Table from "../../components/table/table";
 import "./users.css";
 
