@@ -1,9 +1,10 @@
+import AnalyticsCard from "../../components/analytics-card/analytics-card";
 import "./analytics.css";
 
 const Analytics = () => {
   return (
-    <div>
-      <h1>Analytics Page</h1>
+    <div className="analytics-content-wrapper">
+      <AnalyticsCard />
     </div>
   )
 }
