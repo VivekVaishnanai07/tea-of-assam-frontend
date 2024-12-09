@@ -56,7 +56,7 @@ const Dashboard = () => {
         <CommonPieChart name="Category Distribution" value={Category_Data} colors={COLORS} width="50%" labelLine={false} />
       </div>
       <div className='sales-by-channel-section'>
-        <CommonBarChart name="Sales by Channel" value={Sales_Channel_Data} colors={COLORS1} bars={[{ dataKey: "Value", fill: '#8884d8' }]} width="100%" />
+        <CommonBarChart name="Sales by Channel" value={Sales_Channel_Data} colors={COLORS1} bars={[{ dataKey: "Value", fill: '#8884d8' }]} width="100%" xDataKey="name" />
       </div>
     </div>
   );

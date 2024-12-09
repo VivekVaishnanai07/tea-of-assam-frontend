@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Bar, BarChart, CartesianGrid, Cell, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import "./bar-chart.css";
 
-const CommonBarChart = ({ name, value, colors, bars, stacked = false, width }) => {
+const CommonBarChart = ({ name, value, colors, bars, stacked = false, width, xDataKey }) => {
   return (
     <motion.div
       className='bar-chart-wrapper'
@@ -16,7 +16,7 @@ const CommonBarChart = ({ name, value, colors, bars, stacked = false, width }) =
         <ResponsiveContainer>
           <BarChart data={value}>
             <CartesianGrid strokeDasharray='3 3' stroke='#4b5563' />
-            <XAxis dataKey="name" stroke='#9ca3af' />
+            <XAxis dataKey={xDataKey} stroke='#9ca3af' />
             <YAxis stroke='#9ca3af' />
             <Tooltip
               contentStyle={{

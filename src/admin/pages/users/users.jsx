@@ -141,6 +141,7 @@ const Users = () => {
           { dataKey: "16-20", fill: "#F59E0B" },
           { dataKey: "20-24", fill: "#6EE7B7" },
         ]}
+          xDataKey="name"
           stacked={true} />
       </div>
       <div className='user-demographics-section'>

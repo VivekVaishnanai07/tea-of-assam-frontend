@@ -125,6 +125,7 @@ const Analytics = () => {
           { dataKey: "Revenue", fill: "#10B981" },
           { dataKey: "Profit", fill: "#F59E0B" },
         ]}
+          xDataKey="name"
           stacked={false} />
       </div>
       <div className='other-chart-section'>
