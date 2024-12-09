@@ -94,7 +94,7 @@ const Sales = () => {
       </motion.div>
       <div className='bottom-section'>
         <CommonPieChart name="Sales by Category" value={SalesbyCategory} colors={COLORS} width="50%" />
-        <CommonBarChart name="Daily Sales Trend" value={Daily_Sales_Data} bars={[{ dataKey: "Sales", fill: '#10b981' }]} />
+        <CommonBarChart name="Daily Sales Trend" value={Daily_Sales_Data} bars={[{ dataKey: "Sales", fill: '#10b981' }]} labelLine={false} />
       </div>
     </div>
   )

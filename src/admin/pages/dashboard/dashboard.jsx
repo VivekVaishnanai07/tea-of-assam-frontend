@@ -52,8 +52,8 @@ const Dashboard = () => {
         <Card icon={BarChart2} title="Total Revenue" color="#10b981" data="$98,765" />
       </div>
       <div className="middle-section">
-        <CommonLineChart name="Sales Overview" data={Sales_Data} dataKey="name" />
-        <CommonPieChart name="Category Distribution" value={Category_Data} colors={COLORS} width="50%" />
+        <CommonLineChart name="Sales Overview" data={Sales_Data} xDataKey="name" yDataKey="value" />
+        <CommonPieChart name="Category Distribution" value={Category_Data} colors={COLORS} width="50%" labelLine={false} />
       </div>
       <div className='sales-by-channel-section'>
         <CommonBarChart name="Sales by Channel" value={Sales_Channel_Data} colors={COLORS1} bars={[{ dataKey: "Value", fill: '#8884d8' }]} width="100%" />

@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import "./line-chart.css";
 
-const CommonLineChart = ({ name, data, dataKey }) => {
+const CommonLineChart = ({ name, data, xDataKey, yDataKey }) => {
   return (
     <motion.div
       className='line-chart-wrapper'
@@ -15,7 +15,7 @@ const CommonLineChart = ({ name, data, dataKey }) => {
         <ResponsiveContainer width="100%" height={"100%"}>
           <LineChart data={data}>
             <CartesianGrid strokeDasharray={'3 3'} stroke="#4b5563" />
-            <XAxis dataKey="value" stroke="#9ca3af" />
+            <XAxis dataKey={xDataKey} stroke="#9ca3af" />
             <YAxis stroke="#9ca3af" />
             <Tooltip
               contentStyle={{
@@ -26,7 +26,7 @@ const CommonLineChart = ({ name, data, dataKey }) => {
             />
             <Line
               type="monotone"
-              dataKey={dataKey}
+              dataKey={yDataKey}
               stroke="#6366f1"
               strokeWidth={3}
               dot={{ fill: "#6366f1", strokeWidth: 2, r: 5 }}

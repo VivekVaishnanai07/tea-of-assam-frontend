@@ -17,10 +17,10 @@ const Daily_Orders_Data = [
 ]
 
 const Category_Data = [
-  { name: "Pending", Value: 60 },
-  { name: "Processing", Value: 105 },
-  { name: "Shipped", Value: 80 },
-  { name: "Delivered", Value: 210 }
+  { name: "Pending", value: 60 },
+  { name: "Processing", value: 105 },
+  { name: "Shipped", value: 80 },
+  { name: "Delivered", value: 210 }
 ];
 
 const COLORS = ["#ff6b6b", "#4ecdc4", "#45b7d1", "#fed766", "#2ab7ca"];
@@ -110,8 +110,8 @@ const Orders = () => {
         <Card title="Total Revenue" icon={DollarSign} data={Orders_Stat.totalRevenue} color="#ef4444" />
       </div>
       <div className="middle-section">
-        <CommonLineChart name="Daily Orders" data={Daily_Orders_Data} dataKey="name" />
-        <CommonPieChart name="Category Distribution" value={Category_Data} colors={COLORS} width="50%" />
+        <CommonLineChart name="Daily Orders" data={Daily_Orders_Data} xDataKey="value" yDataKey="name" />
+        <CommonPieChart name="Category Distribution" value={Category_Data} colors={COLORS} width="50%" labelLine={false} />
       </div>
       <div className="table-section">
         <Table tableTitle="Orders List" searchBarValue={searchTerm} searchBarOnChange={SearchHandler} columns={columns} actions={actions} data={getCurrentPageOrders()} currentPage={currentPage} setCurrentPage={setCurrentPage} totalItems={filteredOrders.length} />

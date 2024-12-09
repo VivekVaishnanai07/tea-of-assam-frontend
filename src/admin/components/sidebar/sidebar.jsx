@@ -49,7 +49,7 @@ const Sidebar = () => {
           <Menu size={26} />
         </motion.button>
 
-        <div>
+        <div className="mt-2">
           {SIDEBAR_ITEMS.map((item) => (
             <Link key={item.href} to={item.href}>
               <motion.div className="sidebar-item">
