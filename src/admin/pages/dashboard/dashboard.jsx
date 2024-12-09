@@ -52,7 +52,7 @@ const Dashboard = () => {
         <Card icon={BarChart2} title="Total Revenue" color="#10b981" data="$98,765" />
       </div>
       <div className="middle-section">
-        <CommonLineChart name="Sales Overview" data={Sales_Data} />
+        <CommonLineChart name="Sales Overview" data={Sales_Data} dataKey="name" />
         <CommonPieChart name="Category Distribution" value={Category_Data} colors={COLORS} width="50%" />
       </div>
       <div className='sales-by-channel-section'>

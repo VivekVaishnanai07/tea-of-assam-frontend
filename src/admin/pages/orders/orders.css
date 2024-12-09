@@ -14,4 +14,71 @@
     align-items: center;
     gap: 1.25rem;
   }
+
+  .middle-section {
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  .table-section {
+    margin-top: 22px;
+
+    .green-label {
+      color: rgb(220 252 231 / 1);
+      line-height: 1.25rem;
+      font-weight: 600;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      background-color: rgb(21 128 61 / 1);
+      font-size: 0.75rem;
+      border-radius: 9999px;
+      display: inline-flex;
+    }
+
+    .red-label {
+      color: rgb(254 226 226 / 1);
+      line-height: 1.25rem;
+      font-weight: 600;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      background-color: rgb(185 28 28 / 1);
+      font-size: 0.75rem;
+      border-radius: 9999px;
+      display: inline-flex;
+    }
+
+    .blue-label {
+      color: rgb(219 234 254 / 1);
+      line-height: 1.25rem;
+      font-weight: 600;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      background-color: rgb(29 78 216 / 1);
+      font-size: 0.75rem;
+      border-radius: 9999px;
+      display: inline-flex;
+    }
+
+    .yellow-label {
+      color: rgb(254 249 195 / 1);
+      line-height: 1.25rem;
+      font-weight: 600;
+      font-size: 0.75rem;
+      padding-left: 1rem;
+      background-color: rgb(161 98 7 / 1);
+      padding-right: 1rem;
+      border-radius: 9999px;
+      display: inline-flex;
+    }
+
+    .view-btn {
+      color: rgb(59 130 246 / 1);
+      cursor: pointer;
+      -webkit-appearance: button;
+      background-color: transparent;
+      background-image: none;
+      text-transform: none;
+      border: 0;
+    }
+  }
 }

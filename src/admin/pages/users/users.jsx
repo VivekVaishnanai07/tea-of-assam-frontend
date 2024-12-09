@@ -132,7 +132,7 @@ const Users = () => {
       <Table tableTitle="Users" searchBarValue={searchTerm} searchBarOnChange={SearchHandler} columns={columns} data={getCurrentPageUsers()} actions={actions} currentPage={currentPage} setCurrentPage={setCurrentPage} totalItems={filteredUsers.length} />
 
       <div className="bottom-section">
-        <CommonLineChart name="User Growth" data={User_Growth_Data} />
+        <CommonLineChart name="User Growth" data={User_Growth_Data} dataKey="name" />
         <CommonBarChart name="User Activity HeatMap" value={User_Activity_Data} bars={[
           { dataKey: "0-4", fill: "#5B82F7" },
           { dataKey: "4-8", fill: "#8B5CF6" },
