@@ -8,6 +8,7 @@ import wishlistReducer from './features/wishlist/slice';
 
 // Admin Reducers
 import overViewReducer from './features/admin/overview/slice';
+import adminProductsReducer from './features/admin/products/slice';
 
 export const store = configureStore({
   reducer: {
@@ -18,5 +19,6 @@ export const store = configureStore({
     clients: clientsReducer,
     orders: ordersReducer,
     overview: overViewReducer,
+    adminProducts: adminProductsReducer,
   },
 })

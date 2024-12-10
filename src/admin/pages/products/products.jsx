@@ -1,5 +1,8 @@
 import { AlertTriangle, DollarSign, Edit, Package, Trash2, TrendingUp } from "lucide-react";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { getProductsData } from "../../../store/features/admin/products/thunk";
+import { formatPrice } from "../../../utils/util";
 import Card from "../../components/card/card";
 import Table from "../../components/table/table";
 import "./products.css";
@@ -31,10 +34,32 @@ const columns = [
 ];
 
 const Products = () => {
+  const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
+  const [productsDetails, setProductsDetails] = useState(null);
   const [filteredProducts, setFilteredProducts] = useState(Product_Data);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+  const [loading, setLoading] = useState(true); // Track loading state
+  const productsItem = useSelector((state) => state.adminProducts.productData)
+
+  useEffect(() => {
+    dispatch(getProductsData())
+      .then(() => {
+        setLoading(false); // Set loading to false when data is loaded
+      })
+      .catch((error) => {
+        console.error("Error fetching overview data:", error);
+        setLoading(false); // Set loading to false even on error to prevent hanging UI
+      });
+  }, [dispatch]);
+
+
+  useEffect(() => {
+    if (productsItem !== null) {
+      setProductsDetails(productsItem)
+    }
+  }, [productsItem])
 
   const SearchHandler = (e) => {
     const term = e.target.value.toLowerCase();
@@ -59,13 +84,17 @@ const Products = () => {
 
   return (
     <div className="admin-products-wrapper">
-      <div className="top-section">
-        <Card icon={Package} title="Total Products" color="#6366f1" data="4,321" />
-        <Card icon={TrendingUp} title="Top Selling" color="#10b981" data="69" />
-        <Card icon={AlertTriangle} title="Low Stock" color="#f59e0b" data="32" />
-        <Card icon={DollarSign} title="Top Selling" color="#ef4444" data="$654,310" />
-      </div>
-      <Table tableTitle="Products" searchBarValue={searchTerm} searchBarOnChange={SearchHandler} columns={columns} data={getCurrentPageProducts()} actions={actions} currentPage={currentPage} setCurrentPage={setCurrentPage} totalItems={filteredProducts.length} />
+      {loading ? "Lading...." : (
+        <>
+          <div className="top-section">
+            <Card icon={Package} title="Total Products" color="#6366f1" data={`${formatPrice(productsItem.totalProducts)}`} />
+            <Card icon={TrendingUp} title="Top Selling" color="#10b981" data={`${formatPrice(productsItem.topSelling)}`} />
+            <Card icon={AlertTriangle} title="Low Stock" color="#f59e0b" data={`${formatPrice(productsItem.lowStock)}`} />
+            <Card icon={DollarSign} title="Total Revenue" color="#ef4444" data={`$${formatPrice(productsItem.totalRevenue)}`} />
+          </div>
+          <Table tableTitle="Products" searchBarValue={searchTerm} searchBarOnChange={SearchHandler} columns={columns} data={getCurrentPageProducts()} actions={actions} currentPage={currentPage} setCurrentPage={setCurrentPage} totalItems={filteredProducts.length} />
+        </>
+      )}
     </div>
   )
 }
