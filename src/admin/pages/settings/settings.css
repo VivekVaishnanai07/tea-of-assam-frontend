@@ -1,0 +1,184 @@
+.setting-content-wrapper {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  max-width: 56rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  .common-section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    .icon {
+      color: rgb(99 102 241 / 1);
+      margin-right: 0.5rem;
+    }
+
+    .title {
+      color: rgb(243 244 246 / 1);
+      letter-spacing: 0.025em;
+      font-weight: 600;
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+    }
+  }
+
+  .profile-section {
+    padding: 1.5rem;
+    background-color: rgb(31 41 55 / 0.5);
+    border: 1px solid rgb(55 65 81 / 1);
+    border-radius: 0.75rem;
+    margin-bottom: 1rem;
+
+    .profile-content {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .user-img {
+      width: 7rem;
+      height: 7rem;
+      border-radius: 9999px;
+      margin-right: 1rem;
+    }
+
+    .profile-name {
+      font-weight: 600;
+      color: rgb(243 244 246 / 1);
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .profile-email {
+      color: rgb(209 213 219 / 1);
+    }
+
+    .edit-btn {
+      font-size: 16px;
+      width: auto;
+      color: rgb(255 255 255 / 1);
+      font-weight: 600;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      background-color: rgb(79 70 229 / 1);
+      border-radius: 0.25rem;
+      border: unset;
+      cursor: pointer;
+    }
+  }
+
+  .notification-section {
+    padding: 1.5rem;
+    background-color: rgb(31 41 55 / 0.5);
+    border: 1px solid rgb(55 65 81 / 1);
+    border-radius: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Toggle container */
+  .notification-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .notification-title {
+    color: rgb(209 213 219 / 1);
+  }
+
+  .notification-switch {
+    position: relative;
+    width: 2.75rem;
+    height: 1.5rem;
+    background-color: #4b5563;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  /* Knob */
+  .toggle-knob {
+    position: absolute;
+    top: 0.25rem;
+    left: 0.25rem;
+    width: 1rem;
+    height: 1rem;
+    background-color: #ffffff;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+  }
+
+  /* State: Checked */
+  .notification-switch.active {
+    background-color: #4f46e5;
+  }
+
+  .notification-switch.active .toggle-knob {
+    transform: translateX(1.25rem);
+  }
+
+
+  .security-section {
+    padding: 1.5rem;
+    background-color: rgb(31 41 55 / 0.5);
+    border: 1px solid rgb(55 65 81 / 1);
+    border-radius: 0.75rem;
+    margin-bottom: 1rem;
+
+    .change-password-btn {
+      font-size: 16px;
+      width: auto;
+      color: rgb(255 255 255 / 1);
+      font-weight: 600;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      background-color: rgb(79 70 229 / 1);
+      border-radius: 0.25rem;
+      border: unset;
+      cursor: pointer;
+    }
+  }
+
+  .danger-zone-section {
+    padding: 1.5rem;
+    background-color: rgb(127 29 29 / 0.5);
+    border: 1px solid rgb(185 28 28 / 1);
+    border-radius: 0.75rem;
+    margin-bottom: 1rem;
+
+    .icon {
+      color: rgb(248 113 113 / 1);
+    }
+
+    .dec {
+      color: rgb(209 213 219 / 1);
+      margin-bottom: 1rem;
+    }
+
+    .delete-btn {
+      font-size: 16px;
+      color: rgb(255 255 255 / 1);
+      font-weight: 600;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      background-color: rgb(220 38 38 / 1);
+      width: auto;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      border-radius: 0.25rem;
+      border: unset;
+      cursor: pointer;
+    }
+  }
+}
