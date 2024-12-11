@@ -5,6 +5,7 @@ import { Toaster } from 'sonner';
 import AdminAuthRoutes from "./admin/routers/admin-auth-routes.jsx";
 import AdminUnAuthRoutes from "./admin/routers/admin-unAuth-routes.jsx";
 
+import { useEffect } from 'react';
 import './App.css';
 import CartPopup from "./components/cart/cart-popup.jsx";
 import Footer from "./components/footer/footer.jsx";
@@ -18,6 +19,13 @@ import { store } from './store/store.jsx';
 const App = () => {
   const location = useLocation();
   const isAdminPath = location.pathname.startsWith("/admin");
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', (event) => {
+      const leaveTime = new Date().toISOString();
+      console.log("Last Active User time  ---->", leaveTime)
+    });
+  }, [])
 
   return (
     <Provider store={store}>

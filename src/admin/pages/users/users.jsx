@@ -1,41 +1,27 @@
 import { Edit, Trash2, UserCheck, UserIcon, UserPlus, UserX } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getUsersListThunk } from "../../../store/features/admin/users/thunk";
 import Card from "../../components/card/card";
 import CommonBarChart from "../../components/common/bar-chart/bar-chart";
 import CommonLineChart from "../../components/common/line-chart/line-chart";
 import CommonPieChart from "../../components/common/pie-chart/pie-chart";
 import Table from "../../components/table/table";
+import UserModal from "./user-modal/user-modal";
 import "./users.css";
 
-const User_Data = [
-  { id: 1, name: "Mudassar", email: "mudassar@gmail.com", role: "Admin", status: "Active" },
-  { id: 2, name: "Ustad g", email: "john.smith@gmail.com", role: "Customer", status: "Active" },
-  { id: 3, name: "Wahab", email: "wahab.noor@gmail.com", role: "Customer", status: "Inactive" },
-  { id: 4, name: "Danish", email: "danish.joe@gmail.com", role: "Moderator", status: "Active" },
-  { id: 5, name: "Usama", email: "usama.glasses@gmail.com", role: "Customer", status: "Active" },
-  { id: 6, name: "Ayesha", email: "ayesha.khan@gmail.com", role: "Admin", status: "Inactive" },
-  { id: 7, name: "Hassan", email: "hassan.ali@gmail.com", role: "Customer", status: "Active" },
-  { id: 8, name: "Sarah", email: "sarah.jones@gmail.com", role: "Admin", status: "Active" },
-  { id: 9, name: "Ali", email: "ali.baba@gmail.com", role: "Customer", status: "Inactive" },
-  { id: 10, name: "Fahad", email: "fahad.king@gmail.com", role: "Moderator", status: "Active" },
-  { id: 11, name: "Zainab", email: "zainab.queen@gmail.com", role: "Customer", status: "Active" },
-  { id: 12, name: "Bilal", email: "bilal.smart@gmail.com", role: "Customer", status: "Inactive" },
-  { id: 13, name: "Rizwan", email: "rizwan.shah@gmail.com", role: "Moderator", status: "Active" },
-  { id: 14, name: "Kiran", email: "kiran.doe@gmail.com", role: "Customer", status: "Inactive" },
-  { id: 15, name: "Yasir", email: "yasir.ace@gmail.com", role: "Admin", status: "Active" }
-];
 
 const columns = [
-  { key: "name", label: 'Name' },
+  { key: "firstName", label: 'First Name' },
+  { key: "lastName", label: 'Last Name' },
   { key: "email", label: 'Email' },
   {
     key: "role",
     label: "Role",
     render: (value) => {
       let roleClass = "";
-      if (value === "Admin") roleClass = "green-label";
-      else if (value === "Moderator") roleClass = "green-label";
-      else if (value === "Customer") roleClass = "red-label";
+      if (value === "admin") roleClass = "green-label";
+      else if (value === "client") roleClass = "green-label";
       return (
         <span className={roleClass}>
           {value}
@@ -43,25 +29,29 @@ const columns = [
       );
     }
   },
-  {
-    key: "status",
-    label: "Status",
-    render: (value) => {
-      const statusClass = value === "Active"
-        ? "active-status"
-        : "inactive-status";
-      return (
-        <span className={statusClass}>
-          {value}
-        </span>
-      );
-    }
-  },
+  // {
+  //   key: "status",
+  //   label: "Status",
+  //   render: (value) => {
+  //     const statusClass = value === "Active"
+  //       ? "active-status"
+  //       : "inactive-status";
+  //     return (
+  //       <span className={statusClass}>
+  //         {value}
+  //       </span>
+  //     );
+  //   }
+  // },
 ];
 
 const Users = () => {
+  const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredUsers, setFilteredUsers] = useState(User_Data);
+  const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [paginatedUsers, setPaginatedUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const Users_Stat = {
@@ -70,21 +60,42 @@ const Users = () => {
     activeUsers: 23091,
     churnRate: "2.3%",
   }
+  const usersList = useSelector((state) => state.adminUsers.usersList);
+
+  useEffect(() => {
+    dispatch(getUsersListThunk()).then(() => {
+      setLoading(false);
+    })
+      .catch((error) => {
+        console.error("Error fetching users data:", error);
+        setLoading(false);
+      });
+  }, [dispatch])
+
+  useEffect(() => {
+    if (usersList) {
+      setFilteredUsers(usersList);
+    }
+  }, [usersList]);
+
+  useEffect(() => {
+    if (filteredUsers) {
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      console.log(filteredUsers);
+      setPaginatedUsers(filteredUsers.slice(startIndex, startIndex + itemsPerPage));
+    }
+  }, [filteredUsers, currentPage]);
 
   const SearchHandler = (e) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
-    const filtered = User_Data.filter(user =>
-      user.name.toLowerCase().includes(term) ||
-      user.email.toLowerCase().includes(term)
+    const filtered = usersList.filter(product =>
+      product.firstName.toLowerCase().includes(term) ||
+      product.lastName.toLowerCase().includes(term) ||
+      product.email.toLowerCase().includes(term)
     );
     setFilteredUsers(filtered);
     setCurrentPage(1);
-  };
-
-  const getCurrentPageUsers = () => {
-    const start = (currentPage - 1) * itemsPerPage;
-    return filteredUsers.slice(start, start + itemsPerPage);
   };
 
   const actions = [
@@ -129,7 +140,23 @@ const Users = () => {
         <Card icon={UserCheck} title="Active Users" color="#f59e0b" data={Users_Stat.activeUsers.toLocaleString()} />
         <Card icon={UserX} title="Churn Rate" color="#ef4444" data={Users_Stat.churnRate} />
       </div>
-      <Table tableTitle="Users" searchBarValue={searchTerm} searchBarOnChange={SearchHandler} columns={columns} data={getCurrentPageUsers()} actions={actions} currentPage={currentPage} setCurrentPage={setCurrentPage} totalItems={filteredUsers.length} />
+      <div className="add-user-section">
+        <button className="add-user-btn" onClick={() => setIsOpen(true)}>Add User</button>
+      </div>
+      {
+        loading ? "Loading..." :
+          <Table
+            tableTitle="Users"
+            searchBarValue={searchTerm}
+            searchBarOnChange={SearchHandler}
+            columns={columns}
+            data={paginatedUsers}
+            actions={actions}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalItems={filteredUsers.length}
+          />
+      }
 
       <div className="bottom-section">
         <CommonLineChart name="User Growth" data={User_Growth_Data} xDataKey="name" yDataKey="value" />
@@ -147,6 +174,7 @@ const Users = () => {
       <div className='user-demographics-section'>
         <CommonPieChart name="User Demographics" value={User_Demographic_Data} colors={COLORS} width="100%" labelLine={false} />
       </div>
+      <UserModal isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   )
 }
