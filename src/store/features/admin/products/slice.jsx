@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getProductsData } from "./thunk";
+import { addNewProductThunk, getProductsData, getProductsList } from "./thunk";
 
 const adminProductsSlice = createSlice({
   name: "overview",
   initialState: {
-    productData: [],
+    productData: {},
+    productList: [],
+    newProduct: {},
     error: null
   },
   extraReducers: (builder) => {
@@ -12,6 +14,18 @@ const adminProductsSlice = createSlice({
       state.productData = action.payload;
     })
       .addCase(getProductsData.rejected, (state, action) => {
+        state.error = action.error;
+      })
+      .addCase(getProductsList.fulfilled, (state, action) => {
+        state.productList = action.payload;
+      })
+      .addCase(getProductsList.rejected, (state, action) => {
+        state.error = action.error;
+      })
+      .addCase(addNewProductThunk.fulfilled, (state, action) => {
+        state.newProduct = action.payload;
+      })
+      .addCase(addNewProductThunk.rejected, (state, action) => {
         state.error = action.error;
       })
   }

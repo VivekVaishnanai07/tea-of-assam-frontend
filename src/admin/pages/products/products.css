@@ -15,6 +15,27 @@
     gap: 1.25rem;
   }
 
+  .add-product-section {
+    display: flex;
+    justify-content: end;
+  }
+
+  .add-product-btn {
+    font-size: 16px;
+    width: auto;
+    color: rgb(255 255 255 / 1);
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    background-color: rgb(79 70 229 / 1);
+    border-radius: 0.25rem;
+    border: unset;
+    cursor: pointer;
+  }
+
   .card-item {
     background-color: rgb(31 41 55 / 0.5);
     border-radius: 0.5rem;
