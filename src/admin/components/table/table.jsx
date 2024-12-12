@@ -38,10 +38,10 @@ const Table = ({ tableTitle, searchBarValue, searchBarOnChange, columns, data, a
             </tr>
           </thead>
           <tbody>
-            {data.map((item) => (
+            {data.map((item, index) => (
               <motion.tr
                 className='border-top'
-                key={item.id}
+                key={index + 1}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1.1, delay: 0.2 }}
@@ -57,7 +57,7 @@ const Table = ({ tableTitle, searchBarValue, searchBarOnChange, columns, data, a
                     <div className='action-item'>
                       {actions.map((action, index) => (
                         <button
-                          key={index}
+                          key={index + 1}
                           className={action.className}
                           onClick={() => action.onClick(item)}
                         >

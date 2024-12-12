@@ -1,22 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addNewUserThunk, getUsersListThunk } from "./thunk";
+import { addNewUserThunk, getUsersDataThunk, getUsersListThunk } from "./thunk";
 
 const adminUsersSlice = createSlice({
   name: "overview",
   initialState: {
+    usersData: {},
     usersList: [],
-    userData: {},
+    newUserData: {},
     error: null
   },
   extraReducers: (builder) => {
-    builder.addCase(getUsersListThunk.fulfilled, (state, action) => {
-      state.usersList = action.payload;
+    builder.addCase(getUsersDataThunk.fulfilled, (state, action) => {
+      state.usersData = action.payload;
     })
+      .addCase(getUsersDataThunk.rejected, (state, action) => {
+        state.error = action.error;
+      })
+      .addCase(getUsersListThunk.fulfilled, (state, action) => {
+        state.usersList = action.payload;
+      })
       .addCase(getUsersListThunk.rejected, (state, action) => {
         state.error = action.error;
       })
       .addCase(addNewUserThunk.fulfilled, (state, action) => {
-        state.userData = action.payload;
+        state.newUserData = action.payload;
       })
       .addCase(addNewUserThunk.rejected, (state, action) => {
         state.error = action.error;

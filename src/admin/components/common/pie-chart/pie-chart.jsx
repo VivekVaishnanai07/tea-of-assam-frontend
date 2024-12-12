@@ -24,10 +24,10 @@ const CommonPieChart = ({ name, value, colors, width, labelLine }) => {
               labelLine={labelLine}
               outerRadius={80}
               fill='#8884d8'
-              dataKey="Value"
+              dataKey="value"
               label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
             >
-              {value.map((item, index) => (
+              {value && value.map((item, index) => (
                 <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
               ))}
             </Pie>
