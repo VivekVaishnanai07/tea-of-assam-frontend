@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { addNewUserThunk, getUsersDataThunk, getUsersListThunk } from "./thunk";
 
 const adminUsersSlice = createSlice({
-  name: "overview",
+  name: "adminUsers",
   initialState: {
     usersData: {},
     usersList: [],

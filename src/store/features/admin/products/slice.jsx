@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { addNewProductThunk, getProductsData, getProductsList } from "./thunk";
 
 const adminProductsSlice = createSlice({
-  name: "overview",
+  name: "adminProducts",
   initialState: {
     productData: {},
     productList: [],
