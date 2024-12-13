@@ -73,6 +73,10 @@ export function generateTransactionID() {
   return `${prefix}${randomPart}`;
 }
 
+export const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US");  // Converts to MM/DD/YYYY format
+};
 
 export const formatPrice = (value) => {
   return new Intl.NumberFormat('en-IN', {
