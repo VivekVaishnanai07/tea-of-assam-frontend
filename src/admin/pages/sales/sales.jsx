@@ -10,36 +10,12 @@ import CommonBarChart from '../../components/common/bar-chart/bar-chart';
 import CommonPieChart from '../../components/common/pie-chart/pie-chart';
 import "./sales.css";
 
-const SalesbyCategory = [
-  { name: "Electronics", Value: 400 },
-  { name: "Clothing", Value: 300 },
-  { name: "Home & Garden", Value: 200 },
-  { name: "Books", Value: 100 },
-  { name: "Others", Value: 160 },
-];
-
-const Daily_Sales_Data = [
-  { name: "Mon", Sales: 800 },
-  { name: "Tue", Sales: 1250 },
-  { name: "Wed", Sales: 500 },
-  { name: "Thu", Sales: 1000 },
-  { name: "Fri", Sales: 1300 },
-  { name: "Sat", Sales: 1550 },
-  { name: "Sun", Sales: 1150 },
-];
-
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#0088fe"]
 
 const Sales = () => {
   const dispatch = useDispatch();
   const [selectedTimeRange, setSelectedTimeRange] = useState("month");
   const [salesItems, setSalesItems] = useState({});
-  const Sales_Stats = {
-    totalRevenue: "$1,234,567",
-    averageOrderValue: "$78.90",
-    conversionRate: "43.67%",
-    salesGrowth: "59.3%",
-  };
   const [loading, setLoading] = useState(true);
   const salesDataItems = useSelector((state) => state.adminSales.salesData);
 
@@ -76,7 +52,7 @@ const Sales = () => {
           <div className="top-section">
             <Card icon={DollarSign} title="Total Revenue" color="#6366f1" data={`$${formatPrice(salesItems.totalSales)}`} />
             <Card icon={ShoppingCart} title="Avg. Order Value" color="#10b981" data={`$${formatPrice(salesItems.averageOrderValue)}`} />
-            <Card icon={TrendingUp} title="Conversion Rate" color="#f59e0b" data={`${salesItems.conversionRate}%`} />
+            <Card icon={TrendingUp} title="Conversion Rate" color="#f59e0b" data={`${formatPrice(salesItems.conversionRate)}%`} />
             <Card icon={CreditCard} title="Sales Growth" color="#ef4444" data={`${salesItems.salesGrowth.toFixed(2)}%`} />
           </div>
           <motion.div
@@ -119,8 +95,8 @@ const Sales = () => {
             </div>
           </motion.div>
           <div className='bottom-section'>
-            <CommonPieChart name="Sales by Category" value={SalesbyCategory} colors={COLORS} width="50%" />
-            <CommonBarChart name="Daily Sales Trend" value={Daily_Sales_Data} bars={[{ dataKey: "Sales", fill: '#10b981' }]} labelLine={false} xDataKey="name" />
+            <CommonPieChart name="Sales by Category" value={salesItems.salesByCategory} colors={COLORS} width="50%" />
+            <CommonBarChart name="Daily Sales Trend" value={salesItems.dailySalesTrend} bars={[{ dataKey: "Sales", fill: '#10b981' }]} labelLine={false} xDataKey="name" />
           </div>
         </>
       )}
