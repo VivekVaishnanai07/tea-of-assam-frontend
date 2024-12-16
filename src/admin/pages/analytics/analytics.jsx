@@ -1,40 +1,24 @@
 import { motion } from 'framer-motion';
 import { DollarSign, ShoppingBag, TrendingUp, Users } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Area, AreaChart, CartesianGrid, Legend, PolarAngleAxis, PolarGrid, PolarRadiusAxis, Radar, RadarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { getAnalyticsDataThunk } from "../../../store/features/admin/analytics/thunk";
 import AnalyticsCard from "../../components/analytics-card/analytics-card";
 import CommonBarChart from "../../components/common/bar-chart/bar-chart";
 import CommonLineChart from "../../components/common/line-chart/line-chart";
 import CommonPieChart from "../../components/common/pie-chart/pie-chart";
 import "./analytics.css";
 
-const Analytics_Data = [
-  { month: "Jan", Revenue: 4200, Target: 5000 },
-  { month: "Feb", Revenue: 3000, Target: 3200 },
-  { month: "Mar", Revenue: 5500, Target: 4500 },
-  { month: "Apr", Revenue: 4500, Target: 4200 },
-  { month: "May", Revenue: 5500, Target: 6000 },
-  { month: "Jun", Revenue: 4500, Target: 4800 },
-  { month: "Jul", Revenue: 7000, Target: 6500 },
-]
-
 const Channel_Data = [
-  { name: "Organic Search", Value: 4500 },
-  { name: "Paid Search", Value: 3000 },
-  { name: "Direct", Value: 2500 },
-  { name: "Social Media", Value: 2700 },
-  { name: "Referral", Value: 1800 },
-  { name: "Email", Value: 2400 },
+  { name: "Organic Search", value: 4500 },
+  { name: "Paid Search", value: 3000 },
+  { name: "Direct", value: 2500 },
+  { name: "Social Media", value: 2700 },
+  { name: "Referral", value: 1800 },
+  { name: "Email", value: 2400 },
 ];
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#0088FE", "#00C49F"];
-
-const Product_Performance_Data = [
-  { name: "Product A", Sales: 4000, Revenue: 2650, Profit: 2200 },
-  { name: "Product B", Sales: 3000, Revenue: 1398, Profit: 2210 },
-  { name: "Product C", Sales: 2000, Revenue: 5500, Profit: 2290 },
-  { name: "Product D", Sales: 2780, Revenue: 3908, Profit: 2000 },
-  { name: "Product E", Sales: 1890, Revenue: 4800, Profit: 2181 },
-];
 
 const userRetentionData = [
   { name: "Week 1", Retention: 100 },
@@ -80,26 +64,43 @@ const INSIGHTS = [
 ];
 
 const Analytics = () => {
-  const [SelectedTimeRange, setSelectedTimeRange] = useState("This Quarter");
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
+  const [analyticsItems, setAnalyticsItems] = useState([]);
+
+  const analyticsDataItems = useSelector((state) => state.adminAnalytics.analyticsData);
+
+  useEffect(() => {
+    setLoading(true);
+    dispatch(getAnalyticsDataThunk())
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching overview data:", error);
+        setLoading(false);
+      });
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (analyticsDataItems) {
+      setAnalyticsItems(analyticsDataItems);
+      // setFilteredOrders(analyticsDataItems.ordersList);
+    }
+  }, [analyticsDataItems]);
 
   return (
     <div className="analytics-content-wrapper">
-      <AnalyticsCard />
+      <AnalyticsCard analyticsData={analyticsDataItems.analyticsData} />
       <div className='revenue-vs-target-section'>
         <motion.div initial={{ opacity: 0, y: 25 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2, delay: 0.2 }}>
           <div className="header-section">
             <h2 className='title-text'>Revenue Vs Target</h2>
-            <select className="time-range" value={SelectedTimeRange} onChange={(e) => setSelectedTimeRange(e.target.value)}>
-              <option>This Week</option>
-              <option>This Month</option>
-              <option>This Quarter</option>
-              <option>This Year</option>
-            </select>
           </div>
 
           <div className='content-section'>
             <ResponsiveContainer>
-              <AreaChart data={Analytics_Data}>
+              <AreaChart data={analyticsDataItems.revenueAndTarget}>
                 <CartesianGrid strokeDasharray='3 3' stroke='#374151' />
                 <XAxis dataKey="month" stroke='#9ca3af' />
                 <YAxis stroke='#9ca3af' />
@@ -120,7 +121,7 @@ const Analytics = () => {
       </div>
       <div className='other-chart-section'>
         <CommonPieChart name="Channel Performance" value={Channel_Data} colors={COLORS} width="50%" labelLine={true} />
-        <CommonBarChart name="Product Performance" value={Product_Performance_Data} bars={[
+        <CommonBarChart name="Product Performance" value={analyticsItems.productPerformance} bars={[
           { dataKey: "Sales", fill: "#8B5CF6" },
           { dataKey: "Revenue", fill: "#10B981" },
           { dataKey: "Profit", fill: "#F59E0B" },

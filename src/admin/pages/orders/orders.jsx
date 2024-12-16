@@ -79,8 +79,7 @@ const Orders = () => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
     const filtered = ordersDataItems.ordersList.filter(
-      (order) =>
-        order.shipping_address.name.toLowerCase().includes(term)
+      (order) => order.customer.toLowerCase().includes(term)
     );
     setFilteredOrders(filtered);
     setCurrentPage(1);

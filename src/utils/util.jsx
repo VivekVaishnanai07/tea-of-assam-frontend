@@ -79,10 +79,19 @@ export const formatDate = (dateString) => {
 };
 
 export const formatPrice = (value) => {
+  let numericValue;
+  if (typeof value === 'string') {
+    numericValue = parseInt(value.replace(/[^0-9.-]+/g, ''), 10);
+  } else if (typeof value === 'number') {
+    numericValue = value;
+  } else {
+    return 'Invalid value';
+  }
   return new Intl.NumberFormat('en-IN', {
     maximumFractionDigits: 0, // No decimal points
-  }).format(value);
-}
+  }).format(numericValue);
+};
+
 
 export function getDeliveryStatus(orderDateString) {
   // Parse the order date string into a Date object
